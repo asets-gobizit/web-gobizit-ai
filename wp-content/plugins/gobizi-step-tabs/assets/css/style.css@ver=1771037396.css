@@ -1,0 +1,305 @@
+/* GoBizit Step Tabs Styles */
+
+.gb-step-tabs-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    font-family: 'Outfit', sans-serif; /* Cleaner modern font */
+    align-items: flex-start;
+}
+
+/* Navigation Left */
+.gb-steps-nav {
+    flex: 0 0 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.gb-step-nav-item {
+    display: flex;
+    align-items: stretch; /* Stretch children to tallest content height */
+    gap: 25px;
+    cursor: pointer;
+    padding-bottom: 15px; /* Increased padding for better spacing with long content */
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.gb-step-nav-item:last-child {
+    padding-bottom: 0;
+}
+
+/* Text Styles for Label and Info */
+.gb-step-label {
+    font-size: 22px;
+    font-weight: 500;
+    color: #94a3b8; /* Light gray for inactive */
+    width: 60px;
+    padding-top: 6px;
+    font-family: "Basiersquare Webfont", Sans-serif;
+}
+
+.gb-step-nav-item.active .gb-step-label {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* Marker (Circle & Line) */
+.gb-step-marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+    flex: 0 0 50px; /* Fixed width matching circle */
+}
+
+.gb-step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e7edf3;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    z-index: 2;
+    border: 2px solid transparent;
+    font-family: "Basiersquare Webfont", Sans-serif;
+}
+
+.gb-step-nav-item.active .gb-step-circle {
+    background: #132091;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(19, 32, 145, 0.2);
+}
+
+.gb-step-line {
+    position: absolute;
+    top: 54px; /* Starts exactly under the 50px circle + padding */
+    left: 50%;
+    width: 1.5px;
+    height: calc(100% - 24px); /* Scales with content to reach next circle top */
+    background: #222;
+    z-index: 1;
+    transform: translateX(-50%);
+}
+
+.gb-step-nav-item:last-child .gb-step-line {
+    display: none;
+}
+
+/* Info Section */
+.gb-step-info {
+    flex: 1;
+    padding-top: 4px;
+}
+
+.gb-step-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 7px 0 12px 0;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+    font-family: "Basiersquare Webfont", Sans-serif;
+}
+
+.gb-step-nav-item.active .gb-step-title {
+    color: #000;
+    font-weight: 700;
+}
+
+.gb-step-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin: 0;
+    max-width: 380px;
+    transition: all 0.3s ease;
+    font-family: Inter, sans-serif;
+}
+
+.gb-step-nav-item.active .gb-step-desc {
+    color: #475569;
+}
+
+/* Inactive Opacity Refined */
+.gb-step-nav-item:not(.active) {
+    opacity: 1;
+}
+
+/* Right Content: Images */
+.gb-steps-content {
+    flex: 1;
+    position: sticky;
+    top: 100px;
+    width: 600px;
+    
+}
+
+.gb-image-frame {
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 0px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.03);
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.gb-step-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    padding: 0px;
+}
+
+.gb-step-image.active {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+}
+
+.gb-step-image img {
+    max-width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+	object-position: center;
+}
+
+/* Desktop: Hide Mobile Images */
+.gb-mobile-step-image {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .gb-step-tabs-container {
+        flex-direction: column;
+        padding: 20px 10px;
+        gap: 0;
+    }
+    .gb-steps-nav {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+    }
+    .gb-steps-content {
+        display: none !important;
+    }
+    
+    /* Hide the "Step" text label on mobile as per reference */
+    .gb-step-label {
+        display: none !important;
+    }
+    
+    .gb-step-nav-item {
+        gap: 15px;
+        padding-bottom: 40px;
+        position: relative;
+    }
+    
+    .gb-step-marker {
+        flex: 0 0 50px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 2;
+    }
+    
+    .gb-step-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+        z-index: 5;
+    }
+    
+    /* Stronger vertical line */
+    .gb-step-line {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        width: 2px;
+        height: 100%;
+        background: #e2e8f0; /* Default color */
+        z-index: 1;
+        transform: translateX(-50%);
+    }
+    
+    .gb-step-nav-item.active .gb-step-line {
+        background: #222; /* Active dark line */
+    }
+
+    /* Stop line at active image box or hit it */
+    .gb-step-nav-item.active .gb-step-line {
+        height: 60px; /* Short line hitting the box */
+    }
+    
+    .gb-step-info {
+        padding-top: 5px;
+        flex: 1;
+    }
+    
+    .gb-step-title {
+        font-size: 20px;
+        margin: 5px 0 10px 0;
+        color: #0f172a;
+        font-weight: 700;
+    }
+    
+    .gb-step-desc {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #64748b;
+        margin-bottom: 0px;
+    }
+    
+    /* Full Width Mobile Image Box */
+    .gb-mobile-step-image {
+        display: block;
+        margin-top: 20px;
+        width: calc(100% + 65px); /* Spans across to the left markers */
+        margin-left: -65px; 
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.5s ease;
+    }
+    
+    .gb-step-nav-item.active .gb-mobile-step-image {
+        max-height: 1000px;
+        opacity: 1;
+    }
+    
+    .gb-image-frame {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 10px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        min-height: auto;
+        width: 100%;
+    }
+
+    .gb-image-frame img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        display: block;
+    }
+}

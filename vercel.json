@@ -1,0 +1,168 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "cleanUrls": false,
+  "redirects": [
+    {
+      "source": "/services/darwin-ai",
+      "destination": "/solutions/darwin-ai",
+      "permanent": true
+    },
+    {
+      "source": "/es/services/darwin-ai",
+      "destination": "/es/solutions/darwin-ai",
+      "permanent": true
+    },
+    {
+      "source": "/services/hunter-io",
+      "destination": "/solutions/hunter-io",
+      "permanent": true
+    },
+    {
+      "source": "/es/services/hunter-io",
+      "destination": "/es/solutions/hunter-io",
+      "permanent": true
+    },
+    {
+      "source": "/services/outplay-ai",
+      "destination": "/solutions/outplay-ai",
+      "permanent": true
+    },
+    {
+      "source": "/es/services/outplay-ai",
+      "destination": "/es/solutions/outplay-ai",
+      "permanent": true
+    },
+    {
+      "source": "/services/super-agi",
+      "destination": "/solutions/super-agi",
+      "permanent": true
+    },
+    {
+      "source": "/es/services/super-agi",
+      "destination": "/es/solutions/super-agi",
+      "permanent": true
+    },
+    {
+      "source": "/es/solutions/ai-website-assistant",
+      "destination": "/es/solutions/website-ai-chat-assistant",
+      "permanent": true
+    },
+    {
+      "source": "/sample-page",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:path*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/author/:path*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/tag/:path*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/feed/:path*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/comments/:path*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/post-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/page-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/category-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/author-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/gb_slider-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-admin/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-login.php",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/xmlrpc.php",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/wp-content/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/wp-includes/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    }
+  ]
+}

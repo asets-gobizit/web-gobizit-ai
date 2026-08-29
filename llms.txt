@@ -1,0 +1,38 @@
+# GoBizIT
+
+> GoBizIT is an AI CRM and revenue operations consultancy that improves B2B sales, marketing, service, and lead-to-cash systems using AI agents, automation, Zoho, HubSpot, and Salesforce.
+
+## Main pages
+
+- [Home](https://gobizit.ai/): AI-powered CRM and RevOps consulting.
+- [Services](https://gobizit.ai/services/): AI agents, RevOps, CRM integration, and lead-to-cash optimization.
+- [Solutions](https://gobizit.ai/solutions/): Practical AI solutions for B2B sales and marketing operations.
+- [Our approach](https://gobizit.ai/our-approach/): How GoBizIT diagnoses, designs, and implements connected revenue systems.
+- [About GoBizIT](https://gobizit.ai/about-us/): Business background and operating approach.
+- [Contact](https://gobizit.ai/contact-us/): Discuss an AI CRM or RevOps project.
+- [Frequently asked questions](https://gobizit.ai/faqs/): Answers about services and implementation.
+
+## Spanish
+
+- [Inicio](https://gobizit.ai/es/): Consultoría de CRM y RevOps impulsada por IA.
+- [Servicios](https://gobizit.ai/es/services/): Agentes de IA, automatización e integración CRM.
+- [Soluciones](https://gobizit.ai/es/solutions/): Soluciones prácticas de IA para ventas B2B.
+- [Nuestro enfoque](https://gobizit.ai/es/our-approach/): Metodología de diagnóstico e implementación.
+- [Contacto](https://gobizit.ai/es/contact-us/): Hablar sobre un proyecto de CRM, RevOps o IA.
+
+## Specialist solutions
+
+- [Darwin AI](https://gobizit.ai/services/darwin-ai/): B2B sales intelligence and account research.
+- [Hunter](https://gobizit.ai/services/hunter-io/): Verified lead discovery and email outreach setup.
+- [Outplay AI](https://gobizit.ai/services/outplay-ai/): Multichannel sales engagement and follow-up automation.
+- [SuperAGI](https://gobizit.ai/services/super-agi/): Scalable B2B outbound research and outreach.
+
+## Insights
+
+- [GoBizIT blog](https://gobizit.ai/blogs/): Practical articles about AI, CRM, Zoho, marketing, and sales automation.
+
+## Contact
+
+- Website: https://gobizit.ai/
+- Booking: https://gobizit.zohobookings.com/free
+

@@ -1,0 +1,24 @@
+.elementor-kit-6{--e-global-color-primary:#132091;--e-global-color-secondary:#3460A9;--e-global-color-text:#7A7A7A;--e-global-color-accent:#58A4F6;--e-global-color-6a868f5:#E26034;--e-global-color-e81dec6:#E68438;--e-global-typography-primary-font-family:"Basiersquare Webfont";--e-global-typography-primary-font-weight:700;--e-global-typography-secondary-font-family:"Basiersquare Webfont";--e-global-typography-secondary-font-weight:400;--e-global-typography-text-font-family:"Inter";--e-global-typography-text-font-weight:400;--e-global-typography-accent-font-family:"Roboto";--e-global-typography-accent-font-weight:500;}.elementor-kit-6 e-page-transition{background-color:#FFBC7D;}.elementor-section.elementor-section-boxed > .elementor-container{max-width:1140px;}.e-con{--container-max-width:1140px;}.elementor-widget:not(:last-child){--kit-widget-spacing:20px;}.elementor-element{--widgets-spacing:20px 20px;--widgets-spacing-row:20px;--widgets-spacing-column:20px;}{}h1.entry-title{display:var(--page-title-display);}.site-header .site-branding{flex-direction:column;align-items:stretch;}.site-header{padding-inline-end:0px;padding-inline-start:0px;}.site-footer .site-branding{flex-direction:column;align-items:stretch;}@media(max-width:1024px){.elementor-section.elementor-section-boxed > .elementor-container{max-width:1024px;}.e-con{--container-max-width:1024px;}}@media(max-width:767px){.elementor-section.elementor-section-boxed > .elementor-container{max-width:767px;}.e-con{--container-max-width:767px;}}/* Start Custom Fonts CSS */@font-face {
+	font-family: 'Basiersquare Webfont';
+	font-style: normal;
+	font-weight: normal;
+	font-display: auto;
+	src: url('../../2026/02/Basiersquare-Webfont.eot');
+	src: url('../../2026/02/Basiersquare-Webfont.eot@') format('embedded-opentype'),
+		url('../../2026/02/Basiersquare-Webfont.woff2.html') format('woff2'),
+		url('../../2026/02/Basiersquare-Webfont.woff') format('woff'),
+		url('../../2026/02/Basiersquare-Webfont.ttf') format('truetype'),
+		url('../../2026/02/Basiersquare-Webfont.svg') format('svg');
+}
+@font-face {
+	font-family: 'Basiersquare Webfont';
+	font-style: normal;
+	font-weight: normal;
+	font-display: auto;
+	src: url('../../2026/02/Basiersquare-Webfont.eot');
+	src: url('../../2026/02/Basiersquare-Webfont.eot@') format('embedded-opentype'),
+		url('../../2026/02/Basiersquare-Webfont.woff2.html') format('woff2'),
+		url('../../2026/02/Basiersquare-Webfont.woff') format('woff'),
+		url('../../2026/02/Basiersquare-Webfont.ttf') format('truetype');
+}
+/* End Custom Fonts CSS */

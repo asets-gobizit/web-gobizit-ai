@@ -1,0 +1,255 @@
+/*
+Theme Name: GoBizit AI
+Theme URI: https://gobizit.ai
+Template: hello-elementor
+Author: Ram Digitals
+Author URI: https://aimal-dev.com/
+Description: GoBizit AI is a custom WordPress child theme built with Elementor, inspired by modern AI SaaS platforms. It is designed for AI-based business websites, focusing on clean UI, performance, scalability, and conversion-friendly layouts.
+Tags: accessibility-ready,flexible-header,custom-colors,custom-menu,custom-logo,featured-images,rtl-language-support,threaded-comments,translation-ready
+Version: 1.0.0.1770671764
+Updated: 2026-02-09 21:16:04
+
+*/
+
+/* ==================== TOP BAR ========================== */
+
+#top-announcement-bar, #mega-menu-footer, #footer  {
+    background: linear-gradient(90deg, #132091 0%, #05071a 100%) !important;
+	cursor: pointer;
+}
+/* label-caption - topbar */
+.label-caption{
+	grid-column-gap: .5rem;
+    grid-row-gap: .5rem;
+    border-radius: var(--border-radius-xsmall);
+    color: var(--indigo-500-main);
+    background-color: #0000;
+    align-items: center;
+    padding: .375rem 1.3rem;
+    display: inline-flex;
+    position: relative;
+}
+.label-caption[color="series-e"] {
+    border: 0.6px solid #8098F9;
+    background: linear-gradient(180deg, rgba(198, 215, 254, 0.10) 0%, rgba(128, 152, 249, 0.10) 100%);
+    border-radius: 999rem;
+}
+.label-caption[color="series-e"] .caption-small {
+    background-image: linear-gradient(90deg, #f0f7ff, #dcf0ff 50%, #b8e0ff);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+ /* Rotation Animation */
+  #close-top-bar {
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Soft bounce effect */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Jab mouse icon par jaye - 360 degree ghoomay */
+  #close-top-bar:hover {
+    transform: rotate(180deg);
+  }
+
+/* ==================== TOP BAR END ========================== */
+
+/* ==================== HEADER ========================== */
+#header{
+height: 108px;
+}
+#logo a img{
+width: 160px;
+}
+/* Initial State */
+#header {
+  transition: all 0.4s ease-in-out;
+}
+
+/* Scrolled State (JS se add hoga) */
+#header.header-scrolled {
+  background-color: #ffffff !important; /* Scroll par white background */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  top: 0;
+}
+
+/* Top Bar hiding animation */
+#top-announcement-bar {
+  transition:
+    margin-top 0.4s ease-in-out,
+    opacity 0.3s ease;
+}
+
+.top-bar-hidden {
+  margin-top: -100px; /* Isse top bar upar slide hoke chup jayega */
+  opacity: 0;
+}
+/* Synthesia Style Premium Indigo Gradient */
+.mega-menu-sub-menu-style {
+    background-color: #f4f7ff; /* Base light color */
+    background-image: 
+        radial-gradient(at 0% 0%, #e0e7ff 0%, transparent 50%), 
+        radial-gradient(at 100% 0%, #eef2ff 0%, transparent 50%), 
+        radial-gradient(at 50% 100%, #e0e7ff 0%, transparent 50%);
+    background-size: 100% 100%;
+}
+
+/*============================== heading bg gradient color ===================================*/
+.text-highlight-gradient {
+    background-image: linear-gradient(90deg, #58a4f6, #3460a9 50%, #132091);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-left: -.5rem;
+    margin-right: -.5rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    overflow: visible;
+}
+/*============================== heading bg gradient color end ===================================*/
+/*=============================== Shine on button ======================== */
+/* GoBizi Shimmer Button - Branded Colors */
+.gobizi-shine .elementor-button {
+    position: relative;
+    z-index: 1;
+    background-color: #132091 !important; /* Main Background: Primary Blue */
+    color: #ffffff !important; /* Text Color: White */
+    border: none !important;
+    overflow: hidden;
+    transition: all 0.4s ease !important; /* Smooth color change transition */
+}
+/* Moving Shine Border Layer */
+.gobizi-shine .elementor-button::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    /* Ghoomne wali light - Soft white taake primary blue par dikhe */
+    background-image: conic-gradient(transparent, rgba(255,255,255,0.4), transparent 40%);
+    animation: rotate-shine 4s linear infinite;
+}
+/* Inner Cover - Jo border create karta hai */
+.gobizi-shine .elementor-button::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 2px; /* Border thickness */
+    top: 2px;
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    background: #132091; /* Primary color as base cover */
+    border-radius: 10px;
+    transition: background-color 0.4s ease; /* Hover transition */
+}
+/* --- HOVER STATE --- */
+.gobizi-shine:hover .elementor-button {
+    background-color: #58a4f6 !important; /* Hover: Accent Light Blue */
+}
+.gobizi-shine:hover .elementor-button::after {
+    background-color: #58a4f6; /* Inner cover also changes to Accent Blue */
+}
+/* Rotation Animation */
+@keyframes rotate-shine {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+/*=============================== Shine on button end======================== */
+/*=============================== video custom button  video-btn-container ======================== */
+/* Play/Pause Button Styling */
+.video-control-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #132091; /* GoBizi Primary Blue */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+	border: 8px solid #a2c3e7 ;
+}
+.video-control-btn:hover {
+    transform: scale(1.1);
+    background: #58a4f6; /* Accent Blue on hover */
+}
+/* Icon Styles */
+.video-control-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+/* FLicker issue of mega menu */
+/* Desktop par menu ko gayab hone se bachane ke liye */
+@media (min-width: 1025px) {
+    .premium-nav-menu-container {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+    .premium-main-nav-menu {
+        display: flex !important;
+    }
+}
+.premium-mega-content-container {
+    /* JS width/left set karne se pehle ye isko invisible rakhta hai, 
+       isay display: block karke check karein agar layout sahi rehta hai */
+    transition: none !important; 
+}
+
+/* home box ion styling  */
+.box .elementor-icon{
+	padding: 7px;
+    border-radius: 50%;
+	background: #58A4F6;
+}
+/* blog cards */
+.gb-card-image img{
+height: 100% !important;
+}
+
+/* feature-sec */
+#feature-sec{
+background: linear-gradient(135deg, #f7f7f7 0%, #dac2b9 100%);
+}
+
+/* Fix Horizontal Scrollbar Flicker during animations */
+html, 
+body {
+    overflow-x: hidden !important;
+}
+
+
+
+/* custom whatsapp launcher icon - reverted 2026-08-20 to use the widget's own
+   authentic green WhatsApp SVG instead of the blue PNG override */
+
+
+/* whatsapp button in header, desktop only - added 2026-08-14 */
+.gbz-header-wa { display: flex; align-items: center; line-height: 0; }
+.gbz-header-wa a { display: block; line-height: 0; }
+.gbz-header-wa img { display: block; width: 44px; height: 44px; }
+@media (max-width: 1024px) { .gbz-header-wa { display: none !important; } }
+@media (min-width: 1025px) {
+	.elementor-element-eae527c {
+		flex-direction: row !important;
+		align-items: center !important;
+		gap: 14px !important;
+	}
+	#ht-ctc-chat { display: none !important; }
+}
