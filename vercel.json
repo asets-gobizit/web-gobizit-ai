@@ -148,6 +148,12 @@
       "permanent": true
     }
   ],
+  "rewrites": [
+    {
+      "source": "/api/zoho-mail-webhook/",
+      "destination": "/api/zoho-mail-webhook"
+    }
+  ],
   "headers": [
     {
       "source": "/wp-content/(.*)",
