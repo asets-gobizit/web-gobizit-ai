@@ -109,6 +109,30 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "s",
+          "value": "(?<q>.*)"
+        }
+      ],
+      "destination": "/blogs/?q=:q",
+      "permanent": false
+    },
+    {
+      "source": "/es",
+      "has": [
+        {
+          "type": "query",
+          "key": "s",
+          "value": "(?<q>.*)"
+        }
+      ],
+      "destination": "/es/blogs/?q=:q",
+      "permanent": false
+    },
+    {
       "source": "/wp-admin/:path*",
       "destination": "/",
       "permanent": true

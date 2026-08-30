@@ -1,0 +1,78 @@
+/* Blogs archive: keep the orange header tight around the intro copy,
+   and hide cards that do not match an in-page search. */
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 {
+  position: relative;
+  --padding-top: 20px !important;
+  --padding-bottom: 12px !important;
+  --padding-left: 20px !important;
+  --padding-right: 20px !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284:not(.elementor-motion-effects-element-type-background),
+.elementor-1108 .elementor-element.elementor-element-c8b3284 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+  position: relative;
+  isolation: isolate;
+  max-width: 920px;
+  width: min(920px, 100%);
+  margin-inline: auto;
+  padding: 36px 48px 40px;
+  box-sizing: border-box;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(130deg, #FC6A2F 0%, #FCD22F 89%);
+  border-radius: 32px;
+}
+
+.elementor-1108 .elementor-element.elementor-element-bf09a2d {
+  display: none !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-91ef54c {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.gb-blog-card.is-hidden-by-search {
+  display: none !important;
+}
+
+#gb-blog-no-results {
+  display: none;
+}
+
+#gb-blog-no-results.is-visible {
+  display: block;
+}
+
+.gb-search-box {
+  display: block;
+}
+
+@media (max-width: 880px) {
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 {
+    --padding-top: 16px !important;
+    --padding-bottom: 8px !important;
+    --padding-left: 16px !important;
+    --padding-right: 16px !important;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+    padding: 28px 22px 30px;
+    border-radius: 24px;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+    border-radius: 24px;
+  }
+}
