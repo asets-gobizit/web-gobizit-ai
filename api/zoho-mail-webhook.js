@@ -107,7 +107,7 @@ async function handler(req, res) {
   }
 
   // Answer Zoho first so the handshake stays fast, then forward.
-  sendJson(res, 200, { ok: true });
+  sendJson(res, 200, { ok: true, forwarded: true });
 
   try {
     await forward(config.dest, config.bearer, method, body);
