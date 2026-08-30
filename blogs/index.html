@@ -69,6 +69,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <link rel='stylesheet' id='elementor-post-26-css' href='/wp-content/uploads/elementor/css/post-26.css@ver=1783632244.css' media='all' />
 <link rel='stylesheet' id='elementor-post-529-css' href='/wp-content/uploads/elementor/css/post-529.css@ver=1783632244.css' media='all' />
 <link rel='stylesheet' id='elementor-post-1108-css' href='/wp-content/uploads/elementor/css/post-1108.css@ver=1783641739.css' media='all' />
+<link rel='stylesheet' id='gobizi-blogs-archive-css' href='/wp-content/plugins/gobizi-blog-tabs/assets/css/blogs-archive.css@ver=1788108000.css' media='all' />
 <style id="elementor-pro-custom-fonts-inline-css">
 @font-face {
 	font-family: 'Basiersquare Webfont';
@@ -452,10 +453,10 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 							<div class="elementor-shortcode">    <div class="gb-blog-tabs-wrapper" data-count="11">
         <!-- Search Section -->
         <div class="gb-blog-search-container">
-            <div class="gb-search-box">
-                <input type="text" id="gb-blog-search" placeholder="Search blogs..." autocomplete="off">
-                <button type="button" id="gb-blog-search-submit">Search</button>
-            </div>
+            <form id="gb-blog-search-form" class="gb-search-box" action="/blogs/" method="get" role="search">
+                <input type="text" id="gb-blog-search" name="q" placeholder="Search blogs..." autocomplete="off">
+                <button type="submit" id="gb-blog-search-submit">Search</button>
+            </form>
         </div>
 
         <div class="gb-blog-content-container">
@@ -664,6 +665,8 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
             <div id="gb-blog-loader" class="gb-infinite-loader" style="display:none;">
                 <div class="gb-spinner"></div>
             </div>
+            <div id="gb-blog-no-results" class="gb-no-results" hidden>
+                No matching blogs to show.            </div>
             <div id="gb-blog-no-more" class="gb-no-more-msg" style="display:none;">
                 No more blogs to show.            </div>
         </div>
@@ -1094,7 +1097,7 @@ var ht_ctc_variables = {"g_an_event_name":"click to chat","gtm_event_name":"Clic
 var gobiziBlogData = {"ajax_url":"https://gobizit.ai/wp-admin/admin-ajax.php","nonce":"cc82c42fb8"};
 //# sourceURL=gobizi-blog-script-js-extra
 </script>
-<script id="gobizi-blog-script-js" src="/wp-content/plugins/gobizi-blog-tabs/assets/js/blog-tabs.js@ver=1773281403.js"></script>
+<script id="gobizi-blog-script-js" src="/wp-content/plugins/gobizi-blog-tabs/assets/js/blog-tabs.js@ver=1788108000.js"></script>
 <script id="swiper-js-js" src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js?ver=11.0.0"></script>
 <script id="gobizi-slider-script-js-extra">
 var gobiziSliderSettings = {"ajaxUrl":"https://gobizit.ai/wp-admin/admin-ajax.php"};
