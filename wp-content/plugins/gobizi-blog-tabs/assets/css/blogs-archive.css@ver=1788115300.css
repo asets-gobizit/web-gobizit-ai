@@ -1,0 +1,153 @@
+/* Blogs archive: dark AI hero behind the intro copy,
+   and hide cards that do not match an in-page search. */
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 {
+  position: relative;
+  --padding-top: 20px !important;
+  --padding-bottom: 12px !important;
+  --padding-left: 20px !important;
+  --padding-right: 20px !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284:not(.elementor-motion-effects-element-type-background),
+.elementor-1108 .elementor-element.elementor-element-c8b3284 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 1140px;
+  width: min(1140px, 100%);
+  margin-inline: auto;
+  min-height: 260px;
+  padding: 48px 72px 52px;
+  box-sizing: border-box;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 32px;
+  background-color: #071428;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(7, 20, 40, 0.22) 0%,
+      rgba(7, 20, 40, 0.7) 28%,
+      rgba(7, 20, 40, 0.82) 50%,
+      rgba(7, 20, 40, 0.7) 72%,
+      rgba(7, 20, 40, 0.22) 100%
+    ),
+    url("/wp-content/uploads/2026/08/blogs-hero-ai.webp?v=20260830b");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.elementor-1108 .elementor-element.elementor-element-4391a9f {
+  position: relative;
+  z-index: 1;
+}
+
+.elementor-1108 .elementor-element.elementor-element-4391a9f .elementor-heading-title {
+  color: #ffffff !important;
+  line-height: 1.15 !important;
+  overflow-wrap: anywhere;
+  text-shadow: 0 2px 18px rgba(0, 16, 40, 0.45);
+}
+
+.elementor-1108 .elementor-element.elementor-element-91ef54c {
+  position: relative;
+  z-index: 1;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  color: #f4f7ff !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-91ef54c p {
+  color: #f4f7ff !important;
+}
+
+.elementor-1108 .elementor-element.elementor-element-bf09a2d {
+  display: none !important;
+}
+
+.gb-blog-card.is-hidden-by-search {
+  display: none !important;
+}
+
+#gb-blog-no-results {
+  display: none;
+}
+
+#gb-blog-no-results.is-visible {
+  display: block;
+}
+
+.gb-search-box {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+    min-height: 240px;
+    padding: 40px 40px 44px;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+    background-position: 58% center;
+  }
+}
+
+@media (max-width: 880px) {
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 {
+    --padding-top: 16px !important;
+    --padding-bottom: 8px !important;
+    --padding-left: 16px !important;
+    --padding-right: 16px !important;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+    min-height: 220px;
+    padding: 32px 22px 34px;
+    border-radius: 24px;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+    border-radius: 24px;
+    background-position: 62% 42%;
+  }
+}
+
+@media (max-width: 767px) {
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 {
+    --padding-top: 12px !important;
+    --padding-bottom: 8px !important;
+    --padding-left: 12px !important;
+    --padding-right: 12px !important;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner {
+    min-height: 200px;
+    padding: 28px 18px 30px;
+    border-radius: 20px;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-c8b3284 .e-con-inner::before {
+    border-radius: 20px;
+    background-position: 64% 40%;
+  }
+
+  .elementor-1108 .elementor-element.elementor-element-4391a9f .elementor-heading-title {
+    line-height: 1.2 !important;
+  }
+}
