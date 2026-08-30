@@ -3,8 +3,8 @@
  *
  * Zoho Mail's first-save handshake POSTs to the Webhook URL with no
  * Authorization header and refuses to save unless that request returns
- * HTTP 200. This endpoint always answers Zoho with 200, then forwards
- * the payload to the Cursor automation webhook with a Bearer token.
+ * HTTP 200. This endpoint awaits the dest fetch, then always answers
+ * Zoho with 200 so the outgoing webhook handshake/save stays valid.
  *
  * Env vars (set in the Vercel project; never commit values):
  *   ZOHO_MAIL_WEBHOOK_DEST   — full https destination URL
@@ -66,16 +66,21 @@ function destinationFromEnv(env) {
 }
 
 async function forward(dest, bearer, method, body) {
-  await fetch(dest, {
-    method,
-    headers: {
-      Authorization: `Bearer ${bearer}`,
-      'Content-Type': 'application/json',
-    },
-    body,
-    redirect: 'manual',
-    signal: AbortSignal.timeout(8000),
-  });
+  try {
+    const destRes = await fetch(dest, {
+      method,
+      headers: {
+        Authorization: `Bearer ${bearer}`,
+        'Content-Type': 'application/json',
+      },
+      body,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(8000),
+    });
+    return destRes.status;
+  } catch {
+    return 0;
+  }
 }
 
 async function handler(req, res) {
@@ -106,14 +111,10 @@ async function handler(req, res) {
     return;
   }
 
-  // Answer Zoho first so the handshake stays fast, then forward.
-  sendJson(res, 200, { ok: true, forwarded: true });
-
-  try {
-    await forward(config.dest, config.bearer, method, body);
-  } catch {
-    // Fail closed: do not log dest, bearer, body, or the fetch error.
-  }
+  const destStatus = await forward(config.dest, config.bearer, method, body);
+  const forwarded = destStatus >= 200 && destStatus < 300;
+  console.log(`forward destStatus=${destStatus}`);
+  sendJson(res, 200, { ok: true, forwarded, destStatus });
 }
 
 module.exports = handler;
