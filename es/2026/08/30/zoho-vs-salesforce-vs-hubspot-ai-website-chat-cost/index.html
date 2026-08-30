@@ -472,19 +472,19 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                                                         <h4 class="gb-sidebar-title">Tabla de contenidos</h4>
                             <ul class="gb-toc-list">
                                     <li class="gb-toc-item">
-                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-1" class="gb-toc-link">Cómo funciona cada agente</a>
+                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-quick" class="gb-toc-link">Respuesta r&#225;pida: costo a 50.000 chats</a>
                                     </li>
                                     <li class="gb-toc-item">
-                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-2" class="gb-toc-link">Las mismas capacidades, lado a lado</a>
+                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-1" class="gb-toc-link">C&#243;mo funciona cada agente</a>
                                     </li>
                                     <li class="gb-toc-item">
                                         <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-3" class="gb-toc-link">Costo de 50.000 chats al mes</a>
                                     </li>
                                     <li class="gb-toc-item">
-                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-4" class="gb-toc-link">Recomendación</a>
+                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-2" class="gb-toc-link">Las mismas capacidades, lado a lado</a>
                                     </li>
                                     <li class="gb-toc-item">
-                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-5" class="gb-toc-link">Fuentes</a>
+                                        <a href="/es/2026/08/30/zoho-vs-salesforce-vs-hubspot-ai-website-chat-cost/#gb-section-4" class="gb-toc-link">Recomendaci&#243;n</a>
                                     </li>
                             </ul>
                         </div>
@@ -493,6 +493,50 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                 <!-- Content Column -->
                 <article class="gb-post-content-column">
                     <div class="gb-entry-content">
+<style id="gb-50k-cost-compare-css">
+.gb-exec-summary{background:#0f172a;color:#e2e8f0;border-radius:16px;padding:28px 26px 20px;margin:8px 0 40px;border:1px solid #1e293b;box-shadow:0 12px 32px rgba(15,23,42,.16)}
+.gb-entry-content .gb-exec-summary p{margin:0;color:#e2e8f0;font-family:Inter,sans-serif}
+.gb-entry-content .gb-exec-summary h2.gb-exec-title{font-size:26px!important;line-height:1.25;color:#fff;margin:0 0 8px!important;letter-spacing:-.4px}
+.gb-exec-kicker{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#93c5fd;margin:0 0 10px!important}
+.gb-exec-label{font-size:14px;color:#cbd5e1;margin:0 0 20px!important;line-height:1.55}
+.gb-exec-rows{display:grid;gap:12px;margin:0 0 20px}
+.gb-exec-row{background:#1e293b;border-radius:12px;padding:14px 16px 13px;border:1px solid #334155}
+.gb-exec-row-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;margin-bottom:6px}
+.gb-exec-platform{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#93c5fd;font-family:Inter,sans-serif}
+.gb-exec-total{font-size:22px;font-weight:800;color:#fff;font-family:"Basiersquare Webfont",Inter,sans-serif;letter-spacing:-.4px;line-height:1.2}
+.gb-exec-total span{font-size:13px;font-weight:600;color:#cbd5e1;letter-spacing:0;margin-left:6px}
+.gb-exec-detail{font-size:15px;line-height:1.55;color:#e2e8f0}
+.gb-exec-aside{font-size:13px;color:#94a3b8;margin-top:6px!important}
+.gb-cost-chart{margin:0;background:#111827;border:1px solid #334155;border-radius:12px;padding:16px 14px 12px}
+.gb-cost-chart figcaption{color:#cbd5e1;font-size:13px;line-height:1.5;margin:0 0 14px;font-family:Inter,sans-serif}
+.gb-cost-bars{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:720px){.gb-cost-bars{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+.gb-cost-col{background:#1e293b;border-radius:10px;padding:14px 12px 12px;text-align:center;display:flex;flex-direction:column;min-height:100%}
+.gb-cost-col-name{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#93c5fd;font-family:Inter,sans-serif}
+.gb-cost-col-amount{font-size:20px;font-weight:800;color:#fff;margin:8px 0 10px;font-family:"Basiersquare Webfont",Inter,sans-serif;letter-spacing:-.4px;line-height:1.2}
+.gb-cost-track{height:12px;background:#334155;border-radius:999px;overflow:hidden;margin-top:auto}
+.gb-cost-fill{height:100%;border-radius:999px}
+.gb-cost-col.is-zoho .gb-cost-fill{width:36%;background:#38bdf8}
+.gb-cost-col.is-sf .gb-cost-fill{width:88%;background:#818cf8}
+.gb-cost-col.is-hs .gb-cost-fill{width:100%;background:#93c5fd}
+.gb-cost-col-note{font-size:12px;color:#94a3b8;margin-top:8px;font-family:Inter,sans-serif}
+.gb-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.gb-entry-content .gb-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 30px}
+.gb-entry-content .gb-table-scroll figure{margin:0}
+.gb-entry-content table.gb-compare-table{width:100%;border-collapse:collapse;font-size:15px;font-family:Inter,sans-serif}
+.gb-entry-content table.gb-compare-table th,
+.gb-entry-content table.gb-compare-table td{vertical-align:top;padding:10px 12px;border:1px solid #e2e8f0;text-align:left}
+.gb-entry-content table.gb-compare-table thead th{background:#0f172a;color:#fff;font-weight:700}
+.gb-entry-content table.gb-compare-table th:nth-child(4),
+.gb-entry-content table.gb-compare-table td:nth-child(4){background:#eff6ff;color:#0f172a;font-weight:700}
+.gb-entry-content table.gb-compare-table thead th:nth-child(4){background:#132091;color:#fff}
+@media(max-width:640px){
+  .gb-entry-content .gb-exec-summary h2.gb-exec-title{font-size:22px!important}
+  .gb-exec-total{font-size:18px}
+  .gb-cost-col-amount{font-size:17px}
+}
+</style>
+
                         
 
 
@@ -501,6 +545,52 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <p class="wp-block-paragraph">Esta guía explica, en lenguaje claro, cómo está construido y cómo se cobra el agente de chat con IA de cada plataforma, y luego aplica la misma hipótesis de volumen &#8212; 50.000 conversaciones en un mes &#8212; a las tres para mostrar lo que realmente cuesta ese volumen. Cierra con una recomendación para la mayoría de las pymes.</p>
 
 <p class="wp-block-paragraph">Una nota sobre las cifras: HubSpot y Salesforce publican precios basados en créditos y en resultados que cambian de forma menor a lo largo del año, y la plataforma más reciente de Zia Agents de Zoho cobra el uso de IA por consumo de tokens, no por conversación. Las cifras siguientes proceden de las páginas de precios de cada proveedor y se han contrastado con análisis independientes de 2026; trátalas como orientativas y confirma las tarifas actuales antes de firmar un contrato.</p>
+
+<aside class="gb-exec-summary" id="gb-section-quick" aria-labelledby="gb-exec-title">
+<p class="gb-exec-kicker">Costos mensuales orientativos en USD</p>
+<h2 class="gb-exec-title" id="gb-exec-title">Respuesta r&#225;pida: costo mensual total a 50.000 chats de IA en tu web</h2>
+<p class="gb-exec-label">Cifras orientativas en d&#243;lares estadounidenses a 50.000 conversaciones al mes, m&#225;s el software base m&#237;nimo t&#237;pico. El uso de IA y los puestos de software se muestran por separado para no mezclarlos.</p>
+<div class="gb-exec-rows">
+<div class="gb-exec-row">
+<div class="gb-exec-row-top"><span class="gb-exec-platform">Zoho SalesIQ + Zia Agents</span><span class="gb-exec-total">~$65&#8211;$140<span>/mes en total</span></span></div>
+<p class="gb-exec-detail">En Est&#225;ndar: IA $45&#8211;$120 (75&#8211;150 millones de tokens) + unos $20 por operador de SalesIQ Enterprise.</p>
+<p class="gb-exec-aside">Aparte, no es el rango del titular: el exceso Pro de IA es de $165&#8211;$390.</p>
+</div>
+<div class="gb-exec-row">
+<div class="gb-exec-row-top"><span class="gb-exec-platform">Salesforce Agentforce</span><span class="gb-exec-total">~$10.000&#8211;$15.000<span>/mes de IA t&#237;pica</span></span></div>
+<p class="gb-exec-detail">IA t&#237;pica a 2&#8211;3 acciones/chat, m&#225;s $165+/usuario de Service Cloud Enterprise.</p>
+<p class="gb-exec-aside">El piso de 1 acci&#243;n, unos $5.000 solo de IA, est&#225; en las tablas de detalle.</p>
+</div>
+<div class="gb-exec-row">
+<div class="gb-exec-row-top"><span class="gb-exec-platform">HubSpot Breeze</span><span class="gb-exec-total">~$25.000+<span>/mes de IA</span></span></div>
+<p class="gb-exec-detail">Uso de IA m&#225;s $90+/puesto y una tarifa de onboarding de un solo pago.</p>
+</div>
+</div>
+<figure class="gb-cost-chart">
+<figcaption>Uso t&#237;pico de IA al mes a 50.000 chats. Las cifras en d&#243;lares son la comparaci&#243;n; la longitud de las barras usa escala logar&#237;tmica para que Zoho se vea.</figcaption>
+<p class="gb-sr-only">Uso t&#237;pico de IA al mes: Zoho unos $45 a $120; Salesforce unos $10.000 a $15.000; HubSpot unos $25.000 o m&#225;s.</p>
+<div class="gb-cost-bars" role="img" aria-label="Costo t&#237;pico de IA al mes a 50.000 chats: Zoho de $45 a $120, Salesforce de $10.000 a $15.000, HubSpot $25.000 o m&#225;s.">
+<div class="gb-cost-col is-zoho">
+<div class="gb-cost-col-name">Zoho</div>
+<div class="gb-cost-col-amount">~$45&#8211;$120</div>
+<div class="gb-cost-track" aria-hidden="true"><div class="gb-cost-fill"></div></div>
+<div class="gb-cost-col-note">IA Est&#225;ndar</div>
+</div>
+<div class="gb-cost-col is-sf">
+<div class="gb-cost-col-name">Salesforce</div>
+<div class="gb-cost-col-amount">~$10.000&#8211;$15.000</div>
+<div class="gb-cost-track" aria-hidden="true"><div class="gb-cost-fill"></div></div>
+<div class="gb-cost-col-note">IA t&#237;pica, 2&#8211;3 acciones</div>
+</div>
+<div class="gb-cost-col is-hs">
+<div class="gb-cost-col-name">HubSpot</div>
+<div class="gb-cost-col-amount">~$25.000+</div>
+<div class="gb-cost-track" aria-hidden="true"><div class="gb-cost-fill"></div></div>
+<div class="gb-cost-col-note">IA por chat resuelto</div>
+</div>
+</div>
+</figure>
+</aside>
 
 <h2 id='gb-section-1' class="wp-block-heading">Cómo funciona cada agente</h2>
 
@@ -540,26 +630,22 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <li><strong>Modelo de precios:</strong> HubSpot pasó en 2026 a un precio basado en resultados: se cobra por conversación resuelta (actualmente unos $0,50), descontada de un pool compartido de créditos a unos $0,01 por crédito, no por mensaje intercambiado.</li>
 </ul>
 
-<h2 id='gb-section-2' class="wp-block-heading">Las mismas capacidades, lado a lado</h2>
-
-<p class="wp-block-paragraph">Para comparar de forma justa, asume la misma base: un agente de IA que responde desde una base de conocimiento, califica o enruta leads y puede transferir una conversación en vivo a una persona.</p>
-
-<figure class="wp-block-table"><table>
-<thead><tr><th>Capacidad</th><th>Zoho SalesIQ + Zia Agents</th><th>Salesforce Agentforce</th><th>HubSpot Breeze</th></tr></thead>
-<tbody>
-<tr><td>Widget de chat en vivo</td><td>Incluido en todos los planes</td><td>Incluido con Service Cloud</td><td>Incluido en todos los planes, incluido Free</td></tr>
-<tr><td>El agente de IA responde desde una base de conocimiento</td><td>Zia Agents (producto independiente, sin costo de construcción)</td><td>Agentforce (solo Enterprise Edition o superior)</td><td>Breeze Customer Agent (solo Professional/Enterprise)</td></tr>
-<tr><td>Transferencia humana en el mismo chat</td><td>Sí &#8212; forwardChat a cualquier departamento</td><td>Sí &#8212; cola de Omni-Channel</td><td>Sí &#8212; bandeja compartida de Conversations</td></tr>
-<tr><td>Consultas / acciones sobre el CRM</td><td>Sí, mediante herramientas (Zoho CRM y otros)</td><td>Nativo y profundo en Salesforce</td><td>Sí, mediante HubSpot CRM</td></tr>
-<tr><td>Plan mínimo para el agente de IA</td><td>SalesIQ Basic ($7/operador/mes) + Zia Agents</td><td>Service Cloud Enterprise (~$165/usuario/mes)</td><td>Marketing/Service Hub Professional (~$90+/puesto/mes)</td></tr>
-<tr><td>El uso de IA se factura por</td><td>Tokens de LLM (nivel gratuito amplio)</td><td>Flex Credits por acción (~$0,10/acción)</td><td>Créditos por conversación resuelta (~$0,50)</td></tr>
-<tr><td>Tarifa de onboarding / setup</td><td>Ninguna publicada</td><td>Suele requerir implementación</td><td>~$1.500&#8211;$3.000 obligatoria en Professional</td></tr>
-</tbody>
-</table></figure>
-
 <h2 id='gb-section-3' class="wp-block-heading">Costo de 50.000 chats al mes</h2>
 
 <p class="wp-block-paragraph">50.000 conversaciones al mes son, más o menos, 1.600&#8211;1.700 chats al día. Los widgets pueden parecer iguales a ese volumen. Las facturas, no.</p>
+
+<h3 class="wp-block-heading">Comparaci&#243;n unificada a 50.000 chats</h3>
+
+<p class="wp-block-paragraph">El uso de IA y el software base m&#237;nimo van en l&#237;neas distintas. Los totales de Salesforce usan 2&#8211;3 acciones t&#237;picas m&#225;s un puesto de Service Cloud Enterprise; no asumen cero puestos. El piso de 1 acci&#243;n, unos $5.000 solo de IA, est&#225; en la tabla de acciones.</p>
+
+<div class="gb-table-scroll"><figure class="wp-block-table"><table class="gb-compare-table">
+<thead><tr><th>Plataforma</th><th>Costo de uso de IA</th><th>Software base m&#237;nimo</th><th>Total mensual</th><th>Costo por chat</th></tr></thead>
+<tbody>
+<tr><td><strong>Zoho SalesIQ + Zia Agents</strong></td><td>$45&#8211;$120 Est&#225;ndar (75&#8211;150 millones de tokens)</td><td>~$20/operador</td><td>~$65&#8211;$140</td><td>~$0,001&#8211;$0,003</td></tr>
+<tr><td><strong>Salesforce Agentforce</strong></td><td>$5.000&#8211;$15.000 (1&#8211;3 acciones); t&#237;pico $10.000&#8211;$15.000 a 2&#8211;3 acciones</td><td>$165+/puesto</td><td>~$10.000&#8211;$15.000+ t&#237;pico (IA + un puesto). Solo IA: $5.000&#8211;$15.000</td><td>~$0,20&#8211;$0,30 en uso t&#237;pico</td></tr>
+<tr><td><strong>HubSpot Breeze</strong></td><td>$25.000</td><td>$90+/puesto + onboarding</td><td>$25.000+</td><td>$0,50+</td></tr>
+</tbody>
+</table></figure></div>
 
 <h3 class="wp-block-heading">Zoho: tokens, no conversaciones</h3>
 
@@ -596,34 +682,41 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 
 <p class="wp-block-paragraph">Con la tarifa actual basada en resultados, de unos $0,50 por conversación resuelta, 50.000 chats resueltos suman <strong>$25.000/mes</strong> de uso de IA. Los créditos incluidos en Professional cubren solo unas 60 conversaciones/mes. Suma las tarifas por puesto del hub desde unos <strong>$90/puesto/mes</strong> y una tarifa de onboarding de un solo pago de unos <strong>$1.500&#8211;$3.000</strong>.</p>
 
-<h3 class="wp-block-heading">Resumen de costo mensual a 50.000 conversaciones</h3>
+<h3 class="wp-block-heading">Costo total de propiedad a 50.000 chats</h3>
+
+<div class="gb-table-scroll"><figure class="wp-block-table"><table class="gb-compare-table">
+<thead><tr><th>Plataforma</th><th>Uso de IA</th><th>Software base</th><th>Total mensual</th><th>Por chat</th></tr></thead>
+<tbody>
+<tr><td><strong>Zoho SalesIQ + Zia Agents</strong></td><td>$45&#8211;$120 Est&#225;ndar</td><td>~$20/operador</td><td>~$65&#8211;$140</td><td>~$0,001&#8211;$0,003</td></tr>
+<tr><td><strong>Salesforce Agentforce</strong></td><td>$10.000&#8211;$15.000 t&#237;pico (2&#8211;3 acciones)</td><td>$165+/puesto</td><td>~$10.000&#8211;$15.000+ (IA + un puesto)</td><td>~$0,20&#8211;$0,30</td></tr>
+<tr><td><strong>HubSpot Breeze</strong></td><td>$25.000</td><td>$90+/puesto + onboarding</td><td>$25.000+</td><td>$0,50+</td></tr>
+</tbody>
+</table></figure></div>
+
+<h2 id='gb-section-2' class="wp-block-heading">Las mismas capacidades, lado a lado</h2>
+
+<p class="wp-block-paragraph">Para comparar de forma justa, asume la misma base: un agente de IA que responde desde una base de conocimiento, califica o enruta leads y puede transferir una conversación en vivo a una persona.</p>
 
 <figure class="wp-block-table"><table>
-<thead><tr><th>Plataforma</th><th>Uso típico de IA a 50k chats</th><th>Software base</th></tr></thead>
+<thead><tr><th>Capacidad</th><th>Zoho SalesIQ + Zia Agents</th><th>Salesforce Agentforce</th><th>HubSpot Breeze</th></tr></thead>
 <tbody>
-<tr><td><strong>Zoho SalesIQ + Zia Agents</strong></td><td>Bajo &#8212; sobre todo un exceso moderado de tokens o BYOK más allá de la asignación incluida</td><td>SalesIQ Enterprise ≈ $20/operador/mes</td></tr>
-<tr><td><strong>Salesforce Agentforce</strong></td><td>≈ $5.000 &#8211; $15.000</td><td>Service Cloud Enterprise ≈ $165/usuario/mes</td></tr>
-<tr><td><strong>HubSpot Breeze</strong></td><td>≈ $25.000</td><td>Marketing/Service Hub Professional ≈ $90+/puesto/mes + tarifa de onboarding</td></tr>
+<tr><td>Widget de chat en vivo</td><td>Incluido en todos los planes</td><td>Incluido con Service Cloud</td><td>Incluido en todos los planes, incluido Free</td></tr>
+<tr><td>El agente de IA responde desde una base de conocimiento</td><td>Zia Agents (producto independiente, sin costo de construcción)</td><td>Agentforce (solo Enterprise Edition o superior)</td><td>Breeze Customer Agent (solo Professional/Enterprise)</td></tr>
+<tr><td>Transferencia humana en el mismo chat</td><td>Sí &#8212; forwardChat a cualquier departamento</td><td>Sí &#8212; cola de Omni-Channel</td><td>Sí &#8212; bandeja compartida de Conversations</td></tr>
+<tr><td>Consultas / acciones sobre el CRM</td><td>Sí, mediante herramientas (Zoho CRM y otros)</td><td>Nativo y profundo en Salesforce</td><td>Sí, mediante HubSpot CRM</td></tr>
+<tr><td>Plan mínimo para el agente de IA</td><td>SalesIQ Basic ($7/operador/mes) + Zia Agents</td><td>Service Cloud Enterprise (~$165/usuario/mes)</td><td>Marketing/Service Hub Professional (~$90+/puesto/mes)</td></tr>
+<tr><td>El uso de IA se factura por</td><td>Tokens de LLM (nivel gratuito amplio)</td><td>Flex Credits por acción (~$0,10/acción)</td><td>Créditos por conversación resuelta (~$0,50)</td></tr>
+<tr><td>Tarifa de onboarding / setup</td><td>Ninguna publicada</td><td>Suele requerir implementación</td><td>~$1.500&#8211;$3.000 obligatoria en Professional</td></tr>
 </tbody>
 </table></figure>
 
 <h2 id='gb-section-4' class="wp-block-heading">Recomendación</h2>
 
-<p class="wp-block-paragraph">A este volumen, Zoho es la única de las tres que se mantiene cerca de una asignación gratuita o de bajo costo. Salesforce tiene sentido si ya estás en Service Cloud Enterprise y necesitas un trabajo profundo con el CRM y Flows. HubSpot es el camino más sencillo si ya estás en Professional, pero es el más caro a 50.000 chats.</p>
+<p class="wp-block-paragraph">A 50.000 chats al mes, Zoho cuesta unas 250&#8211;375&#215; menos que HubSpot y 150&#8211;230&#215; menos que Salesforce solo en el uso de IA.</p>
+
+<p class="wp-block-paragraph">Salesforce tiene sentido si ya est&#225;s en Service Cloud Enterprise y necesitas un trabajo profundo con el CRM y Flows. HubSpot es el camino m&#225;s sencillo si ya est&#225;s en Professional, pero es el m&#225;s caro a este volumen.</p>
 
 <p class="wp-block-paragraph">Para responder FAQ, calificar leads y desviar tickets, SalesIQ + Zia Agents es la opción más rentable.</p>
-
-<h2 id='gb-section-5' class="wp-block-heading">Fuentes</h2>
-
-<ul class="wp-block-list">
-<li><a href="https://www.zoho.com/sites/default/files/salesiq/zoho-salesiq-usd.pdf" target="_blank" rel="nofollow noopener noreferrer">PDF de precios en USD de Zoho SalesIQ</a></li>
-<li><a href="https://www.zoho.com/agents/pricing.html" target="_blank" rel="nofollow noopener noreferrer">Precios de Zoho Zia Agents</a></li>
-<li><a href="https://www.default.com/post/hubspot-breeze-ai-review-and-pricing" target="_blank" rel="nofollow noopener noreferrer">Reseña y precios de HubSpot Breeze AI (Default)</a></li>
-<li><a href="https://expertise.ai/blog/hubspot-chatbot-pricing" target="_blank" rel="nofollow noopener noreferrer">Precios del chatbot de HubSpot (Expertise.ai)</a></li>
-<li><a href="https://resolve247.ai/blog/hubspot-ai-agent-pricing" target="_blank" rel="nofollow noopener noreferrer">Precios del agente de IA de HubSpot (Resolve247)</a></li>
-<li><a href="https://myaskai.com/blog/salesforce-agentforce-complete-guide-2026" target="_blank" rel="nofollow noopener noreferrer">Guía completa de Salesforce Agentforce 2026 (MyaskAI)</a></li>
-<li><a href="https://aquiva.com/blog/agentforce-pricing-gets-a-long-overdue-fix-flex-credits-are-now-live" target="_blank" rel="nofollow noopener noreferrer">Precios de Flex Credits de Agentforce (Aquiva)</a></li>
-</ul>
 
 <blockquote class="wp-block-quote"><p><strong>Nota sobre precios:</strong> los precios, planes, modelos de IA, asignaciones de tokens, paquetes de créditos, precios regionales, impuestos y funciones de producto de HubSpot, Salesforce y Zoho pueden cambiar. Las cifras anteriores son orientativas y se basan en páginas publicadas por los proveedores y en análisis independientes de 2026 revisados en agosto de 2026. Confirma siempre las tarifas actuales con cada proveedor antes de firmar un contrato.</p></blockquote>
 
