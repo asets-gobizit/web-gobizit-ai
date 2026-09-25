@@ -86,6 +86,11 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://gobizit.ai/services/" />
   </url>
   <url>
+    <loc>https://gobizit.ai/services/ai-jumpstart/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gobizit.ai/services/ai-jumpstart/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gobizit.ai/services/ai-jumpstart/" />
+  </url>
+  <url>
     <loc>https://gobizit.ai/solutions/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://gobizit.ai/solutions/" />
     <xhtml:link rel="alternate" hreflang="es" href="https://gobizit.ai/es/solutions/" />

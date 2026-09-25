@@ -6,6 +6,7 @@
 
 - [Home](https://gobizit.ai/): AI-powered CRM and RevOps consulting.
 - [Services](https://gobizit.ai/services/): AI agents, RevOps, CRM integration, and lead-to-cash optimization.
+- [AI Jumpstart](https://gobizit.ai/services/ai-jumpstart/): Free 20-minute AI task audit prompt that maps recurring business tasks, scores what AI can take over, and ranks where to start.
 - [Solutions](https://gobizit.ai/solutions/): Practical AI solutions for B2B sales and marketing operations.
 - [Our approach](https://gobizit.ai/our-approach/): How GoBizIT diagnoses, designs, and implements connected revenue systems.
 - [About GoBizIT](https://gobizit.ai/about-us/): Business background and operating approach.

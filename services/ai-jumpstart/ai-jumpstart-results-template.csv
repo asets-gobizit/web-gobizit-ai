@@ -1,0 +1,4 @@
+Area,Task,Frequency,Minutes each,Hours/month,AI level (Full/Assisted/Human),Ease (1-5),Priority score,Why,,Summary,Value
+Working leads,Example: follow-up email after first call,Daily,10,3.5,Assisted,5,17.5,Drafting from call notes; a person approves,,Total recurring hours/month,=SUM(E2:E500)
+,,,,,,,,,,Hours/month Full or Assisted,"=SUMIF(F2:F500,""Full"",E2:E500)+SUMIF(F2:F500,""Assisted"",E2:E500)"
+,,,,,,,,,,Automation baseline %,"=IFERROR(ROUND(L3/L2*100,0),0)"
