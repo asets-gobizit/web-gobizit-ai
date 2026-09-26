@@ -1,0 +1,4 @@
+﻿Área;Tarea;Frecuencia;Minutos por vez;Horas/mes;Nivel de IA (Completa/Asistida/Humana);Facilidad (1-5);Prioridad;Motivo;;Resumen;Valor
+Trabajar leads;Ejemplo: correo de seguimiento tras la primera llamada;Diaria;10;3,5;Asistida;5;17,5;Redacción a partir de las notas de la llamada, una persona aprueba;;Total horas recurrentes/mes;=SUMA(E2:E500)
+;;;;;;;;;;Horas/mes Completa o Asistida;"=SUMAR.SI(F2:F500;""Completa"";E2:E500)+SUMAR.SI(F2:F500;""Asistida"";E2:E500)"
+;;;;;;;;;;Línea base de automatización %;"=SI.ERROR(REDONDEAR(L3/L2*100;0);0)"

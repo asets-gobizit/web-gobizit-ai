@@ -17,6 +17,7 @@
 
 - [Inicio](https://gobizit.ai/es/): Consultoría de CRM y RevOps impulsada por IA.
 - [Servicios](https://gobizit.ai/es/services/): Agentes de IA, automatización e integración CRM.
+- [AI Jumpstart (ES)](https://gobizit.ai/es/services/ai-jumpstart/): Auditoría gratuita de tareas con IA en 20 minutos: mapea las tareas recurrentes, puntúa lo que la IA puede asumir y prioriza por dónde empezar.
 - [Soluciones](https://gobizit.ai/es/solutions/): Soluciones prácticas de IA para ventas B2B.
 - [Nuestro enfoque](https://gobizit.ai/es/our-approach/): Metodología de diagnóstico e implementación.
 - [Contacto](https://gobizit.ai/es/contact-us/): Hablar sobre un proyecto de CRM, RevOps o IA.
