@@ -4,6 +4,16 @@
   "cleanUrls": false,
   "redirects": [
     {
+      "source": "/es/ai-phone-agent",
+      "destination": "/es/services/ai-phone-agent/",
+      "permanent": true
+    },
+    {
+      "source": "/ai-phone-agent",
+      "destination": "/services/ai-phone-agent/",
+      "permanent": true
+    },
+    {
       "source": "/services/darwin-ai",
       "destination": "/solutions/darwin-ai",
       "permanent": true

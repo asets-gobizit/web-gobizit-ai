@@ -7,6 +7,7 @@
 - [Home](https://gobizit.ai/): AI-powered CRM and RevOps consulting.
 - [Services](https://gobizit.ai/services/): AI agents, RevOps, CRM integration, and lead-to-cash optimization.
 - [AI Jumpstart](https://gobizit.ai/services/ai-jumpstart/): Free 20-minute AI task audit prompt that maps recurring business tasks, scores what AI can take over, and ranks where to start.
+- [AI Phone Agent](https://gobizit.ai/services/ai-phone-agent/): 24/7 AI voice receptionist that answers business calls in English and Spanish, qualifies callers, books meetings and transfers to a human on request. Live demo: +1 213 212 3101.
 - [Solutions](https://gobizit.ai/solutions/): Practical AI solutions for B2B sales and marketing operations.
 - [Our approach](https://gobizit.ai/our-approach/): How GoBizIT diagnoses, designs, and implements connected revenue systems.
 - [About GoBizIT](https://gobizit.ai/about-us/): Business background and operating approach.
@@ -18,6 +19,7 @@
 - [Inicio](https://gobizit.ai/es/): Consultoría de CRM y RevOps impulsada por IA.
 - [Servicios](https://gobizit.ai/es/services/): Agentes de IA, automatización e integración CRM.
 - [AI Jumpstart (ES)](https://gobizit.ai/es/services/ai-jumpstart/): Auditoría gratuita de tareas con IA en 20 minutos: mapea las tareas recurrentes, puntúa lo que la IA puede asumir y prioriza por dónde empezar.
+- [Agente Telefónico con IA (ES)](https://gobizit.ai/es/services/ai-phone-agent/): Recepcionista de voz con IA 24/7 que atiende llamadas en español e inglés, cualifica, agenda reuniones y transfiere a una persona. Demo: +1 213 212 3101.
 - [Soluciones](https://gobizit.ai/es/solutions/): Soluciones prácticas de IA para ventas B2B.
 - [Nuestro enfoque](https://gobizit.ai/es/our-approach/): Metodología de diagnóstico e implementación.
 - [Contacto](https://gobizit.ai/es/contact-us/): Hablar sobre un proyecto de CRM, RevOps o IA.
