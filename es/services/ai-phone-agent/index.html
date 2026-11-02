@@ -826,7 +826,7 @@ body:has(#apa-cw.on) .ht-ctc{display:none!important}
     if(busy)return; if(conv){stop();status(TX.done);return}
     busy=true;root.classList.add('busy');ui(true);status(TX.conn);cwOpen();
     navigator.mediaDevices.getUserMedia({audio:true}).then(function(ms){ms.getTracks().forEach(function(t){t.stop()});return sdk()},function(e){throw {mic:1}})
-    .then(function(L){return L.Conversation.startSession({agentId:AGENT,
+    .then(function(L){return L.Conversation.startSession({agentId:AGENT,connectionType:'websocket',
       onConnect:function(){status(TX.listen);sub.textContent=TX.listen;cwState(TX.listen);cwStart()},
       onMessage:function(m){cwMsg(m.source||m.role,m.message,m.response_id!=null?m.response_id:m.event_id)},
       onModeChange:function(m){var t=m.mode==='speaking'?TX.speak:TX.listen;status(t);sub.textContent=t;cwState(t,m.mode==='speaking')},
