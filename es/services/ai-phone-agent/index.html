@@ -786,7 +786,8 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   function ui(live){root.classList.toggle('live',live);s.classList.toggle('live',live);lab.textContent=live?TX.end:TX.web;sub.textContent=live?TX.conn:TX.sub;sl.textContent=live?TX.end:TX.sticky;if(!live){cancelAnimationFrame(raf);bars.forEach(function(b){b.style.height=''})}}
   function loop(){if(!conv)return;var v=0;try{v=Math.max(conv.getOutputVolume(),conv.getInputVolume())}catch(e){}
     bars.forEach(function(b,i){b.style.height=(6+Math.min(1,v*2.2)*24*(0.45+0.55*Math.abs(Math.sin(i*1.7+performance.now()/180))))+'px'});raf=requestAnimationFrame(loop)}
-  function sdk(){return window.ElevenLabsClient?Promise.resolve(window.ElevenLabsClient):new Promise(function(ok,ko){var x=document.createElement('script');x.src=SDK;x.onload=function(){ok(window.ElevenLabsClient)};x.onerror=ko;document.head.appendChild(x)})}
+  function load(u){return new Promise(function(ok,ko){var x=document.createElement('script');x.src=u;x.onload=function(){window.ElevenLabsClient?ok(window.ElevenLabsClient):ko(new Error('SDK missing'))};x.onerror=function(){x.remove();ko(new Error('SDK load failed: '+u))};document.head.appendChild(x)})}
+  function sdk(){return window.ElevenLabsClient?Promise.resolve(window.ElevenLabsClient):load(SDK).catch(function(e){console.warn('[Eva]',e.message,'- trying CDN');return load('https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.29.0/dist/lib.iife.js')})}
   function stop(){if(conv){var c=conv;conv=null;c.endSession().catch(function(){})}ui(false)}
   function start(){
     if(busy)return; if(conv){stop();status(TX.done);return}
@@ -796,10 +797,10 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
       onConnect:function(){status(TX.listen);sub.textContent=TX.listen},
       onModeChange:function(m){var t=m.mode==='speaking'?TX.speak:TX.listen;status(t);sub.textContent=t},
       onDisconnect:function(){if(conv){conv=null;ui(false);status(TX.done)}},
-      onError:function(){}
+      onError:function(m,c){console.error('[Eva] ElevenLabs error:',m,c)}
     })})
     .then(function(c){conv=c;busy=false;root.classList.remove('busy');loop()})
-    .catch(function(e){busy=false;root.classList.remove('busy');conv=null;ui(false);status(e&&e.mic?TX.mic:TX.err,true)});
+    .catch(function(e){console.error('[Eva] browser call failed:',e);busy=false;root.classList.remove('busy');conv=null;ui(false);status(e&&e.mic?TX.mic:TX.err,true)});
   }
   [].forEach.call(document.querySelectorAll('[data-apa-talk]'),function(b){b.addEventListener('click',function(ev){ev.preventDefault();if(conv||busy){start();return}ch.classList.add('on');ch.querySelector('[data-apa-web]').focus()})});
   window.addEventListener('pagehide',stop);
