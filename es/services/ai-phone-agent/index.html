@@ -823,7 +823,7 @@ body:has(#apa-cw.on) .ht-ctc{display:none!important}
   function cwStart(){cw.classList.add('conn');if(!cwLg)setLg('en');cwT=Date.now();clearInterval(cwI);cwI=setInterval(function(){var s=Math.floor((Date.now()-cwT)/1000);cwm.textContent=('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2)},1000)}
   function cwState(t,talking){cws.textContent=t;cw.classList.toggle('talking',!!talking)}
   var BK='https://gobizit.zohobookings.com/free/#/free',BK_RE=/zoho\s*bookings|discovery call|llamada de descubrimiento|booking link|enlace de reserva/i,BK_RE2=/(https?:\/\/)?gobizit\s*(dot|punto|\.)\s*zoho\s*bookings\s*((dot|punto|\.)\s*com\s*)?(dot\s*)?(slash|barra|\/)\s*free(\s*(\/\s*)?#?\s*\/?\s*free)?/gi;
-  var HO={h:"Habla con una persona ahora",call:"Llamar a Dani",wa:"WhatsApp",book:"Reservar llamada",note:"Las llamadas web no se pueden transferir — contacta a Dani directamente:"};
+  var HO={h:"Habla con una persona ahora",call:"Llámanos",wa:"WhatsApp",book:"Reservar llamada",note:"Las llamadas web no se pueden transferir — contáctanos directamente:"};
   var NU={zero:0,oh:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,cero:0,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9},
       NT={ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,'dieciséis':16,diecisiete:17,dieciocho:18,diecinueve:19},
       NY={twenty:2,thirty:3,forty:4,fifty:5,sixty:6,seventy:7,eighty:8,ninety:9,veinte:2,treinta:3,cuarenta:4,cincuenta:5,sesenta:6,setenta:7,ochenta:8,noventa:9};
