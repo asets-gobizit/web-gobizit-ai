@@ -614,38 +614,56 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 #gbz-portfolio .gbz-portfolio-card img{width:100%;height:auto;display:block}
 #gbz-portfolio .gbz-portfolio-thumb--text{display:flex;align-items:center;justify-content:center;min-height:180px;background:#f2f6ff;color:#0a55a5;font-family:inherit;font-weight:700;font-size:20px}
 #gbz-portfolio .gbz-portfolio-caption{font-family:inherit;font-size:15px;font-weight:600;color:#000000;padding:14px 18px;border-top:1px solid #EEEBEB;margin-top:auto}
+
+/* websites slider */
+#gbz-portfolio .gbz-slider{position:relative;width:100%;margin-top:24px;overflow:hidden;--gbz-per:3;--gbz-gap:24px}
+@media(max-width:1024px){#gbz-portfolio .gbz-slider{--gbz-per:2}}
+@media(max-width:767px){#gbz-portfolio .gbz-slider{--gbz-per:1}}
+#gbz-portfolio .gbz-slider-track{display:flex;gap:var(--gbz-gap);will-change:transform;transition:transform .6s ease}
+#gbz-portfolio .gbz-slider-track>a{flex:0 0 calc((100% - (var(--gbz-per) - 1) * var(--gbz-gap)) / var(--gbz-per));min-width:0}
+#gbz-portfolio .gbz-slider-track>a img,#gbz-portfolio .gbz-slider-track>a .gbz-portfolio-thumb--text{width:100%;display:block}
+#gbz-portfolio .gbz-slider-track>a .gbz-portfolio-thumb--text{min-height:180px}
 </style>
 <div class="e-con-inner">
 <div class="elementor-element elementor-element-8b3e6d2 elementor-widget elementor-widget-heading" data-e-type="widget" data-element_type="widget" data-id="8b3e6d2" data-widget_type="heading.default">
 <h2 class="elementor-heading-title elementor-size-default">Websites We&#8217;ve Built</h2> </div>
 <div class="elementor-element elementor-element-5c7f1a4 gbz-portfolio-intro elementor-widget elementor-widget-text-editor" data-e-type="widget" data-element_type="widget" data-id="5c7f1a4" data-widget_type="text-editor.default">
 <p>Real websites we&#8217;ve designed, built and launched for our clients — click any card to visit the live site.</p> </div>
-<div class="gbz-portfolio-grid">
-<a class="gbz-portfolio-card" href="https://www.gobizit.com" rel="nofollow noopener" target="_blank">
+<div class="gbz-slider"><div class="gbz-slider-track"><a class="gbz-portfolio-card" href="https://www.gobizit.com" rel="nofollow noopener" target="_blank">
 <img alt="www.gobizit.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-gobizit-com.webp"/>
 <span class="gbz-portfolio-caption">www.gobizit.com</span>
-</a>
-<a class="gbz-portfolio-card" href="https://www.littlemandarinstar.com/" rel="nofollow noopener" target="_blank">
+</a><a class="gbz-portfolio-card" href="https://www.littlemandarinstar.com/" rel="nofollow noopener" target="_blank">
 <img alt="www.littlemandarinstar.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-littlemandarinstar.webp"/>
 <span class="gbz-portfolio-caption">www.littlemandarinstar.com</span>
-</a>
-<a class="gbz-portfolio-card" href="https://www.littleenglishstar.com/" rel="nofollow noopener" target="_blank">
+</a><a class="gbz-portfolio-card" href="https://www.littleenglishstar.com/" rel="nofollow noopener" target="_blank">
 <img alt="www.littleenglishstar.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-littleenglishstar.webp"/>
 <span class="gbz-portfolio-caption">www.littleenglishstar.com</span>
-</a>
-<a class="gbz-portfolio-card" href="https://salessimplified.online/" rel="nofollow noopener" target="_blank">
+</a><a class="gbz-portfolio-card" href="https://salessimplified.online/" rel="nofollow noopener" target="_blank">
 <img alt="salessimplified.online website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-salessimplified.webp"/>
 <span class="gbz-portfolio-caption">salessimplified.online</span>
-</a>
-<a class="gbz-portfolio-card" href="https://gmnrconsultants.com/" rel="nofollow noopener" target="_blank">
+</a><a class="gbz-portfolio-card" href="https://gmnrconsultants.com/" rel="nofollow noopener" target="_blank">
 <img alt="gmnrconsultants.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-gmnrconsultants.webp"/>
 <span class="gbz-portfolio-caption">gmnrconsultants.com</span>
-</a>
-<a class="gbz-portfolio-card" href="https://aburanem.vercel.app/" rel="nofollow noopener" target="_blank">
+</a><a class="gbz-portfolio-card" href="https://aburanem.vercel.app/" rel="nofollow noopener" target="_blank">
 <img alt="aburanem.vercel.app website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-aburanem.webp"/>
 <span class="gbz-portfolio-caption">aburanem.vercel.app</span>
-</a>
-</div>
+</a><a class="gbz-portfolio-card" href="https://www.littlespanishstar.com/en/" rel="nofollow noopener" target="_blank"><div class="gbz-portfolio-thumb--text">www.littlespanishstar.com</div><span class="gbz-portfolio-caption">www.littlespanishstar.com</span></a></div></div><script>
+(function(){
+  var sl=document.querySelector('#gbz-portfolio .gbz-slider');if(!sl)return;
+  var tr=sl.querySelector('.gbz-slider-track');var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timer=null,busy=false;
+  function step(){var first=tr.children[0];if(!first)return;var gap=parseFloat(getComputedStyle(tr).columnGap)||0;return first.getBoundingClientRect().width+gap}
+  function next(){if(busy)return;var d=step();if(!d)return;busy=true;tr.style.transition='transform .6s ease';tr.style.transform='translateX(-'+d+'px)';
+    setTimeout(function(){tr.style.transition='none';tr.appendChild(tr.children[0]);tr.style.transform='translateX(0)';tr.offsetHeight;tr.style.transition='';busy=false},650)}
+  function start(){if(still||timer)return;timer=setInterval(next,2000)}
+  function stop(){clearInterval(timer);timer=null}
+  sl.addEventListener('mouseenter',stop);sl.addEventListener('mouseleave',start);
+  sl.addEventListener('focusin',stop);sl.addEventListener('focusout',start);
+  document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
+  start();
+})();
+</script>
+
 </div>
 </div>
 <div class="elementor-element elementor-element-ed7599a e-con-full e-flex e-con e-parent" data-e-type="container" data-element_type="container" data-id="ed7599a" data-settings='{"background_background":"classic"}'>
