@@ -623,6 +623,12 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 #gbz-portfolio .gbz-slider-track>a{flex:0 0 calc((100% - (var(--gbz-per) - 1) * var(--gbz-gap)) / var(--gbz-per));min-width:0}
 #gbz-portfolio .gbz-slider-track>a img,#gbz-portfolio .gbz-slider-track>a .gbz-portfolio-thumb--text{width:100%;display:block}
 #gbz-portfolio .gbz-slider-track>a .gbz-portfolio-thumb--text{min-height:180px}
+#gbz-portfolio .gbz-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
+#gbz-portfolio .gbz-dots button{appearance:none;-webkit-appearance:none;border:0!important;padding:10px 0!important;margin:0!important;background:none!important;cursor:pointer;width:34px;line-height:0;box-shadow:none!important}
+#gbz-portfolio .gbz-dots button::before{content:"";display:block;height:4px;border-radius:4px;background:#C9D2EA;transition:background .3s,transform .3s}
+#gbz-portfolio .gbz-dots button:hover::before{background:#8FA3D9}
+#gbz-portfolio .gbz-dots button.on::before{background:#1B2A8F;transform:scaleY(1.25)}
+#gbz-portfolio .gbz-dots button:focus-visible{outline:2px solid #1B2A8F;outline-offset:2px}
 </style>
 <div class="e-con-inner">
 <div class="elementor-element elementor-element-8b3e6d2 elementor-widget elementor-widget-heading" data-e-type="widget" data-element_type="widget" data-id="8b3e6d2" data-widget_type="heading.default">
@@ -647,20 +653,34 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </a><a class="gbz-portfolio-card" href="https://aburanem.vercel.app/" rel="nofollow noopener" target="_blank">
 <img alt="aburanem.vercel.app website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-aburanem.webp"/>
 <span class="gbz-portfolio-caption">aburanem.vercel.app</span>
-</a><a class="gbz-portfolio-card" href="https://www.littlespanishstar.com/en/" rel="nofollow noopener" target="_blank"><img alt="www.littlespanishstar.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-littlespanishstar.webp"/><span class="gbz-portfolio-caption">www.littlespanishstar.com</span></a></div></div><script>
+</a><a class="gbz-portfolio-card" href="https://www.littlespanishstar.com/en/" rel="nofollow noopener" target="_blank"><img alt="www.littlespanishstar.com website built by GoBizIT" loading="lazy" src="/wp-content/uploads/2026/08/portfolio-littlespanishstar.webp"/><span class="gbz-portfolio-caption">www.littlespanishstar.com</span></a></div></div><div class="gbz-dots" role="group" aria-label="Websites"></div>
+<script>
 (function(){
   var sl=document.querySelector('#gbz-portfolio .gbz-slider');if(!sl)return;
   var tr=sl.querySelector('.gbz-slider-track');var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var timer=null,busy=false;
-  function step(){var first=tr.children[0];if(!first)return;var gap=parseFloat(getComputedStyle(tr).columnGap)||0;return first.getBoundingClientRect().width+gap}
-  function next(){if(busy)return;var d=step();if(!d)return;busy=true;tr.style.transition='transform .6s ease';tr.style.transform='translateX(-'+d+'px)';
-    setTimeout(function(){tr.style.transition='none';tr.appendChild(tr.children[0]);tr.style.transform='translateX(0)';tr.offsetHeight;tr.style.transition='';busy=false},650)}
-  function start(){if(still||timer)return;timer=setInterval(next,2000)}
+  var cards=[].slice.call(tr.children),n=cards.length,timer=null,busy=false,dots=sl.parentNode.querySelector('.gbz-dots'),hold=false;
+  cards.forEach(function(c,i){c.setAttribute('data-i',i);var b=document.createElement('button');b.type='button';
+    b.setAttribute('aria-label',(c.querySelector('.gbz-portfolio-caption')||{}).textContent||('Slide '+(i+1)));
+    b.addEventListener('click',function(){go(i)});dots.appendChild(b)});
+  function cur(){return +tr.children[0].getAttribute('data-i')}
+  function mark(){var c=cur();[].forEach.call(dots.children,function(b,i){b.classList.toggle('on',i===c);b.setAttribute('aria-current',i===c?'true':'false')})}
+  function step(){var gap=parseFloat(getComputedStyle(tr).columnGap)||0;return tr.children[0].getBoundingClientRect().width+gap}
+  function done(){setTimeout(function(){busy=false},20)}
+  function next(){if(busy)return;busy=true;var d=step();tr.style.transition='transform .6s ease';tr.style.transform='translateX(-'+d+'px)';
+    setTimeout(function(){tr.style.transition='none';tr.appendChild(tr.children[0]);tr.style.transform='translateX(0)';tr.offsetHeight;tr.style.transition='';mark();done()},620)}
+  function prev(){if(busy)return;busy=true;var d=step();tr.style.transition='none';tr.insertBefore(tr.lastElementChild,tr.children[0]);tr.style.transform='translateX(-'+d+'px)';tr.offsetHeight;mark();
+    tr.style.transition='transform .6s ease';tr.style.transform='translateX(0)';setTimeout(function(){tr.style.transition='';done()},620)}
+  function go(i){if(busy)return;var k=(i-cur()+n)%n;if(!k)return;restart();
+    if(k===1)return next();if(k===n-1)return prev();
+    busy=true;tr.style.transition='opacity .25s';tr.style.opacity='0';
+    setTimeout(function(){while(cur()!==i)tr.appendChild(tr.children[0]);mark();tr.style.opacity='1';setTimeout(function(){tr.style.transition='';done()},260)},250)}
+  function start(){if(still||timer||hold)return;timer=setInterval(next,2000)}
   function stop(){clearInterval(timer);timer=null}
-  sl.addEventListener('mouseenter',stop);sl.addEventListener('mouseleave',start);
-  sl.addEventListener('focusin',stop);sl.addEventListener('focusout',start);
+  function restart(){stop();start()}
+  sl.addEventListener('mouseenter',function(){hold=true;stop()});sl.addEventListener('mouseleave',function(){hold=false;start()});
+  sl.addEventListener('focusin',function(){hold=true;stop()});sl.addEventListener('focusout',function(){hold=false;start()});
   document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
-  start();
+  mark();start();
 })();
 </script>
 
