@@ -743,6 +743,27 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   t.addEventListener('scroll',function(){var best=0,bd=1e9,mid=t.scrollLeft+t.clientWidth/2;[].forEach.call(t.children,function(c,i){var x=Math.abs(c.offsetLeft+c.clientWidth/2-mid);if(x<bd){bd=x;best=i;}});d.forEach(function(b,i){b.classList.toggle('on',i===best);});},{passive:true});
 })();
 </script>
+<script id="sst-countup">
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.sst-stat b'));
+  if(!els.length||!('IntersectionObserver' in window))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  els.forEach(function(el){
+    var m=el.textContent.match(/^(\D*)([\d.,]+)(.*)$/);if(!m)return;
+    var target=parseFloat(m[2].replace(/,/g,'')),dec=(m[2].split('.')[1]||'').length;
+    el._cu={pre:m[1],end:target,dec:dec,suf:m[3],final:el.textContent};
+    el.style.fontVariantNumeric='tabular-nums';
+    el.textContent=m[1]+(0).toFixed(dec)+m[3];
+  });
+  function run(el){var c=el._cu;if(!c)return;var t0=null,dur=1800;
+    function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/dur,1),e=1-Math.pow(1-k,3);
+      el.textContent=c.pre+(c.end*e).toFixed(c.dec)+c.suf;
+      if(k<1)requestAnimationFrame(step);else el.textContent=c.final;}
+    requestAnimationFrame(step);}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){run(x.target);io.unobserve(x.target);}});},{threshold:0.5});
+  els.forEach(function(el){if(el._cu)io.observe(el);});
+})();
+</script>
 </main>
 
 			<footer data-elementor-type="footer" data-elementor-id="529" class="elementor elementor-529 elementor-location-footer" data-elementor-post-type="elementor_library">
