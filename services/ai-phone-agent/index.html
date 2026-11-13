@@ -828,9 +828,9 @@ body:has(#apa-cw.on) .ht-ctc{display:none!important}
       requestAnimationFrame(step);
     }
     var el=document.getElementById('apa-calc');
-    function chk(){if(!el){play();return}var b=el.getBoundingClientRect();if(b.top<(window.innerHeight||0)*0.85&&b.bottom>0){play();window.removeEventListener('scroll',chk)}}
+    function chk(){if(!el){play();return}var b=el.getBoundingClientRect();if(b.top<(window.innerHeight||0)*0.98&&b.bottom>40){play();window.removeEventListener('scroll',chk)}}
     window.addEventListener('scroll',chk,{passive:true});
-    setTimeout(chk,400);setTimeout(chk,1200);setTimeout(play,8000);
+    setTimeout(chk,400);setTimeout(chk,1200);setTimeout(play,12000);
   })();
   var s=document.getElementById('apa-sticky'),h=document.getElementById('apa-main');
   function chk(){var r=h.getBoundingClientRect();s.classList.toggle('on',r.bottom<0)}
