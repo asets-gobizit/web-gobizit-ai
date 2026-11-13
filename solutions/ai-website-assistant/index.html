@@ -514,14 +514,43 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   function f(n){return cur+Math.round(n).toLocaleString(loc)}
   var i1=document.getElementById('gbzc-i1'),i2=document.getElementById('gbzc-i2'),i3=document.getElementById('gbzc-i3');
   if(!i1||!i2||!i3)return;
+  var o1=document.getElementById('gbzc-o1'),o2=document.getElementById('gbzc-o2'),o3=document.getElementById('gbzc-o3'),res=document.getElementById('gbzc-res');
   function calc(){
     var a=+i1.value,b=+i2.value,c=+i3.value;
-    document.getElementById('gbzc-o1').textContent=a;
-    document.getElementById('gbzc-o2').textContent=b+'%';
-    document.getElementById('gbzc-o3').textContent=f(c);
-    document.getElementById('gbzc-res').textContent=f(a*4.33*(b/100)*c);
+    o1.textContent=a;
+    o2.textContent=b+'%';
+    o3.textContent=f(c);
+    res.textContent=f(a*4.33*(b/100)*c);
   }
-  [i1,i2,i3].forEach(function(x){x.addEventListener('input',calc)});calc();
+  [i1,i2,i3].forEach(function(x){x.addEventListener('input',calc)});
+  var tgt=[+i1.value,+i2.value,+i3.value];
+  var min=[+i1.min||0,+i2.min||0,+i3.min||0];
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){calc();return;}
+  i1.value=min[0];i2.value=min[1];i3.value=min[2];calc();
+  var played=false;
+  function play(){
+    if(played)return;played=true;
+    var dur=1500,t0=null;
+    function step(ts){
+      if(t0===null)t0=ts;
+      var p=Math.min((ts-t0)/dur,1),e=1-Math.pow(1-p,3);
+      i1.value=Math.round(min[0]+(tgt[0]-min[0])*e);
+      i2.value=Math.round(min[1]+(tgt[1]-min[1])*e);
+      i3.value=Math.round((min[2]+(tgt[2]-min[2])*e)/100)*100;
+      calc();
+      if(p<1){requestAnimationFrame(step)}
+      else{i1.value=tgt[0];i2.value=tgt[1];i3.value=tgt[2];calc()}
+    }
+    requestAnimationFrame(step);
+  }
+  var el=document.getElementById('gbzc-calc');
+  if(el&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){
+      for(var k=0;k<en.length;k++){if(en[k].isIntersecting){io.disconnect();setTimeout(play,250);break}}
+    },{threshold:0.3});
+    io.observe(el);
+  }else{setTimeout(play,250)}
 })();
 </script>
 </div>
