@@ -545,12 +545,9 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     requestAnimationFrame(step);
   }
   var el=document.getElementById('gbzc-calc');
-  if(el&&'IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(en){
-      for(var k=0;k<en.length;k++){if(en[k].isIntersecting){io.disconnect();setTimeout(play,250);break}}
-    },{threshold:0.3});
-    io.observe(el);
-  }else{setTimeout(play,250)}
+    function chk(){if(!el){play();return}var b=el.getBoundingClientRect();if(b.top<(window.innerHeight||0)*0.85&&b.bottom>0){play();window.removeEventListener('scroll',chk)}}
+    window.addEventListener('scroll',chk,{passive:true});
+    setTimeout(chk,400);setTimeout(chk,1200);setTimeout(play,8000);
 })();
 </script>
 </div>
