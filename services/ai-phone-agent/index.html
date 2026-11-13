@@ -807,6 +807,34 @@ body:has(#apa-cw.on) .ht-ctc{display:none!important}
     document.getElementById('apa-res').textContent=f(a*4.33*(b/100)*c);
   }
   [i1,i2,i3].forEach(function(x){x.addEventListener('input',calc)});calc();
+  (function(){
+    var tgt=[+i1.value,+i2.value,+i3.value],mn=[+i1.min||0,+i2.min||0,+i3.min||0],st=+i3.step||1;
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    i1.value=mn[0];i2.value=mn[1];i3.value=mn[2];calc();
+    var played=false;
+    function play(){
+      if(played)return;played=true;
+      var dur=1500,t0=null;
+      function step(ts){
+        if(t0===null)t0=ts;
+        var p=Math.min((ts-t0)/dur,1),e=1-Math.pow(1-p,3);
+        i1.value=Math.round(mn[0]+(tgt[0]-mn[0])*e);
+        i2.value=Math.round(mn[1]+(tgt[1]-mn[1])*e);
+        i3.value=Math.round((mn[2]+(tgt[2]-mn[2])*e)/st)*st;
+        calc();
+        if(p<1){requestAnimationFrame(step)}
+        else{i1.value=tgt[0];i2.value=tgt[1];i3.value=tgt[2];calc()}
+      }
+      requestAnimationFrame(step);
+    }
+    var el=document.getElementById('apa-calc');
+    if(el&&'IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(en){
+        for(var k=0;k<en.length;k++){if(en[k].isIntersecting){io.disconnect();setTimeout(play,250);break}}
+      },{threshold:0.3});
+      io.observe(el);
+    }else{setTimeout(play,250)}
+  })();
   var s=document.getElementById('apa-sticky'),h=document.getElementById('apa-main');
   function chk(){var r=h.getBoundingClientRect();s.classList.toggle('on',r.bottom<0)}
   window.addEventListener('scroll',chk,{passive:true});chk();
