@@ -545,9 +545,9 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     requestAnimationFrame(step);
   }
   var el=document.getElementById('gbzc-calc');
-    function chk(){if(!el){play();return}var b=el.getBoundingClientRect();if(b.top<(window.innerHeight||0)*0.85&&b.bottom>0){play();window.removeEventListener('scroll',chk)}}
+    function chk(){if(!el){play();return}var b=el.getBoundingClientRect();if(b.top<(window.innerHeight||0)*0.98&&b.bottom>40){play();window.removeEventListener('scroll',chk)}}
     window.addEventListener('scroll',chk,{passive:true});
-    setTimeout(chk,400);setTimeout(chk,1200);setTimeout(play,8000);
+    setTimeout(chk,400);setTimeout(chk,1200);setTimeout(play,12000);
 })();
 </script>
 </div>
