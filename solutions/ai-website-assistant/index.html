@@ -443,6 +443,74 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <h1 class="elementor-heading-title elementor-size-default">Give Every Website Visitor an AI Assistant That Knows Your Business Cold</h1> </div>
 <div class="elementor-element elementor-element-26fc29c elementor-widget__width-initial elementor-widget-tablet__width-inherit elementor-widget elementor-widget-text-editor" data-e-type="widget" data-element_type="widget" data-id="26fc29c" data-widget_type="text-editor.default">
 <p>An AI chat assistant that answers questions instantly, qualifies visitors through real conversation, and pushes genuine leads straight into your CRM — no canned scripts, no static FAQ widget.</p><p>Runs inside Zoho SalesIQ. Built by GoBizIT, Zoho Experienced Partner.</p> </div>
+<div class="gbzcalc">
+<style id="gbzcalc-styles">
+.gbzcalc{--bg:#060A22;--card:rgba(255,255,255,.045);--line:rgba(138,152,255,.18);--tx:#C3C9E8;--mut:#8E97C2;--wh:#fff;--a1:#7C8CFF;--a2:#B48CFF;--c1:#FF9A3C;--c2:#FF5F6D;
+ background:var(--bg);color:var(--tx);font-family:"Inter",Sans-serif;font-size:17px;line-height:1.6;padding:60px 0;position:relative}
+.gbzcalc *{box-sizing:border-box}
+.gbzcalc .apa-wrap{max-width:1180px;margin:0 auto;padding:0 20px;position:relative}
+.gbzcalc h3{font-family:"Basiersquare Webfont",Sans-serif;font-weight:700;color:var(--wh);margin:0 0 14px;letter-spacing:-.01em;font-size:28px;line-height:1.3}
+.gbzcalc p{margin:0 0 14px}
+.gbzcalc .apa-calc{border:1px solid var(--line);border-radius:28px;padding:40px;background:linear-gradient(160deg,rgba(124,140,255,.10),rgba(255,255,255,.02));display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.gbzcalc .apa-calc label{display:block;font-size:15px;color:#fff;font-weight:600;margin:0 0 6px}
+.gbzcalc .apa-calc label output{float:right;color:var(--a1);font-weight:700}
+.gbzcalc .apa-calc input[type=range]{width:100%;margin:0 0 22px;accent-color:#8C7CFF;height:6px}
+.gbzcalc .apa-res{text-align:center;padding:30px 20px;border-radius:22px;background:rgba(6,10,34,.6);border:1px solid var(--line)}
+.gbzcalc .apa-res small{display:block;color:var(--mut);font-size:14px;text-transform:uppercase;letter-spacing:.08em}
+.gbzcalc .apa-res strong{display:block;font-family:"Basiersquare Webfont",Sans-serif;font-size:54px;line-height:1.1;margin:8px 0 6px;background:linear-gradient(90deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.gbzcalc .apa-res p{font-size:14px;color:var(--mut);margin:0 0 18px}
+.gbzcalc .apa-call{display:inline-flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border-radius:999px;text-decoration:none!important;max-width:100%;
+ background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff!important;box-shadow:0 10px 40px rgba(255,95,109,.45),0 0 0 6px rgba(255,140,80,.12);
+ transition:transform .2s,box-shadow .2s;position:relative;z-index:1;text-align:left;border:0;cursor:pointer;font:inherit}
+.gbzcalc .apa-call:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 50px rgba(255,95,109,.6),0 0 0 8px rgba(255,140,80,.16)}
+.gbzcalc .apa-call .ic{width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.gbzcalc .apa-call .ic::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,255,255,.7);animation:gbzcRing 2.4s ease-out infinite}
+.gbzcalc .apa-call .ic svg{width:22px;height:22px;fill:var(--c2)}
+.gbzcalc .apa-call>span:last-child{min-width:0}
+.gbzcalc .apa-call b{display:block;font-family:"Basiersquare Webfont",Sans-serif;font-size:18px;line-height:1.15;white-space:normal;overflow-wrap:anywhere}
+@keyframes gbzcRing{from{transform:scale(1);opacity:.9}to{transform:scale(1.9);opacity:0}}
+@keyframes gbzcHs{0%,52%,100%{transform:rotate(0)}4%,12%,20%,28%{transform:rotate(-16deg)}8%,16%,24%,32%{transform:rotate(16deg)}36%{transform:rotate(0)}}
+@media(max-width:1024px){.gbzcalc .apa-calc{grid-template-columns:1fr}}
+@media(max-width:767px){.gbzcalc{padding:40px 0}.gbzcalc .apa-calc{padding:26px 20px}.gbzcalc .apa-res strong{font-size:42px}.gbzcalc .apa-call b{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.gbzcalc *{animation:none!important;transition:none!important}}
+</style>
+  <div class="apa-wrap">
+    <div class="apa-calc" id="gbzc-calc">
+      <div>
+        <h3>How much are missed chats costing you?</h3>
+        <p style="color:var(--mut)">Move the sliders. Your numbers, your math.</p>
+        <label>Missed chats per week <output id="gbzc-o1">25</output></label>
+        <input type="range" id="gbzc-i1" min="1" max="100" value="25" aria-label="Missed chats per week">
+        <label>Of those, % that would become customers <output id="gbzc-o2">15%</output></label>
+        <input type="range" id="gbzc-i2" min="1" max="60" value="15" aria-label="Of those, % that would become customers">
+        <label>Average value of a new customer <output id="gbzc-o3">$1,500</output></label>
+        <input type="range" id="gbzc-i3" min="100" max="10000" step="100" value="1500" aria-label="Average value of a new customer">
+      </div>
+      <div class="apa-res">
+        <small>Revenue at risk every month</small>
+        <strong id="gbzc-res">$24,356</strong>
+        <p>Based on your inputs &times; 4.33 weeks.</p>
+        <a class="apa-call" href="https://gobizit.zohobookings.com/free/#/free" rel="nofollow noopener noreferrer" target="_blank"><span class="ic"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/></svg></span><span><b>Get this on my website</b></span></a>
+      </div>
+    </div>
+  </div>
+<script id="gbzcalc-script">
+(function(){
+  var cur="$",loc="en-US";
+  function f(n){return cur+Math.round(n).toLocaleString(loc)}
+  var i1=document.getElementById('gbzc-i1'),i2=document.getElementById('gbzc-i2'),i3=document.getElementById('gbzc-i3');
+  if(!i1||!i2||!i3)return;
+  function calc(){
+    var a=+i1.value,b=+i2.value,c=+i3.value;
+    document.getElementById('gbzc-o1').textContent=a;
+    document.getElementById('gbzc-o2').textContent=b+'%';
+    document.getElementById('gbzc-o3').textContent=f(c);
+    document.getElementById('gbzc-res').textContent=f(a*4.33*(b/100)*c);
+  }
+  [i1,i2,i3].forEach(function(x){x.addEventListener('input',calc)});calc();
+})();
+</script>
+</div>
 <div class="elementor-element elementor-element-01cd53a elementor-align-center gobizi-shine elementor-widget elementor-widget-button" data-e-type="widget" data-element_type="widget" data-id="01cd53a" data-widget_type="button.default">
 <a class="elementor-button elementor-button-link elementor-size-sm" href="/2026/08/17/how-much-does-a-zoho-ai-website-assistant-cost/" rel="noopener" target="_blank">
 <span class="elementor-button-content-wrapper">
