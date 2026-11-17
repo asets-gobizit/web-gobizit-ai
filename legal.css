@@ -64,9 +64,22 @@ footer a{color:#fff;text-decoration:none;margin-right:18px}
 }
 
 /* AI Enabled Partner badge — replaces header Book a Demo */
+.nav,.nav .in,.nav .cta{overflow:visible;position:relative;z-index:80}
 .nav .cta{display:flex;align-items:center;gap:14px}
-.nav .badge-link{display:block;line-height:0;flex:0 0 auto}
+.nav .badge-link{display:block;line-height:0;flex:0 0 auto;position:relative;z-index:20000}
 .nav .badge{height:65px;width:auto;display:block}
+.nav .gbz-cert-popup{position:absolute;top:100%;right:0;left:auto;width:900px;max-width:min(900px,calc(100vw - 32px));padding-top:12px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px);transition:opacity .22s ease,transform .22s ease,visibility .22s ease;z-index:20001;box-sizing:border-box}
+.nav .gbz-cert-card{display:block;background:#fff;border-radius:10px;box-shadow:0 16px 48px rgba(16,24,40,.22),0 2px 8px rgba(16,24,40,.08);overflow:hidden;padding:8px 8px 0;box-sizing:border-box}
+.nav .gbz-cert-card img{display:block;width:100%;height:auto;border-radius:6px}
+.nav .gbz-cert-caption{display:block;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:12px;line-height:1.4;font-weight:500;color:#3b4554;padding:8px 10px 10px}
+@media (hover:hover) and (pointer:fine){
+ .nav .badge-link:hover .gbz-cert-popup,
+ .nav .badge-link:focus-visible .gbz-cert-popup,
+ .nav .badge-link:focus-within .gbz-cert-popup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+}
+@media (hover:none){
+ .nav .gbz-cert-popup{display:none!important}
+}
 @media(max-width:1180px){
  .nav .cta .wa{display:none}
  .nav .badge{height:44px}
