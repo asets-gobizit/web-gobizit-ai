@@ -253,3 +253,71 @@ body {
 	}
 	#ht-ctc-chat { display: none !important; }
 }
+
+/* Zoho AI Enabled Partner badge: replaces the header Book a Demo button.
+   Desktop: WhatsApp, then the badge at the far right, 65px tall.
+   Mobile/tablet: badge stays visible at ~36px, left of the hamburger (WhatsApp stays hidden). */
+.gbz-header-badge { display: flex; align-items: center; line-height: 0; flex: 0 0 auto; }
+.gbz-header-badge a { display: block; line-height: 0; }
+.elementor-element.gbz-header-badge img { display: block; height: 65px !important; width: auto !important; max-width: none !important; }
+
+@media (min-width: 1025px) {
+	.elementor-26 .elementor-element.elementor-element-2453444 { --padding-left: 2.5% !important; --padding-right: 3.5% !important; }
+	.elementor-26 .elementor-element.elementor-element-fa87596 { --width: 15% !important; }
+	.elementor-26 .elementor-element.elementor-element-0304459 { --width: auto !important; flex: 1 1 auto !important; }
+	.elementor-26 .elementor-element.elementor-element-eae527c {
+		--width: auto !important;
+		flex: 0 0 auto !important;
+		flex-wrap: nowrap !important;
+		flex-direction: row !important;
+		align-items: center !important;
+		gap: 14px !important;
+	}
+	.gbz-header-wa, .gbz-header-badge { flex: 0 0 auto !important; }
+}
+
+/* Unhide the right cluster below 1025px so the badge can show; keep WhatsApp hidden. */
+@media (max-width: 1024px) {
+	.elementor-26 .elementor-element.elementor-element-eae527c.elementor-hidden-tablet,
+	.elementor-26 .elementor-element.elementor-element-eae527c.elementor-hidden-mobile_extra,
+	.elementor-26 .elementor-element.elementor-element-eae527c.elementor-hidden-mobile {
+		display: flex !important;
+		--display: flex !important;
+		--width: auto !important;
+		width: auto !important;
+		flex: 0 0 auto !important;
+		flex-direction: row !important;
+		align-items: center !important;
+		order: 2;
+		/* gap between badge and hamburger for the fixed #gbi-lang pill */
+		margin-right: 86px !important;
+	}
+	.elementor-26 .elementor-element.elementor-element-fa87596 { order: 1; flex: 0 1 auto !important; --width: auto !important; min-width: 0; }
+	.elementor-26 .elementor-element.elementor-element-0304459 {
+		order: 3;
+		flex: 0 0 auto !important;
+		--width: auto !important;
+		width: auto !important;
+		margin-left: 0 !important;
+	}
+	.elementor-26 .elementor-element.elementor-element-2453444 {
+		flex-wrap: nowrap !important;
+		align-items: center !important;
+		--flex-wrap-mobile: nowrap !important;
+	}
+	.gbz-header-badge { display: flex !important; margin-left: auto; }
+	.elementor-element.gbz-header-badge img { height: 36px !important; width: auto !important; max-width: none !important; }
+	#gbi-lang { right: 56px; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	.elementor-element.gbz-header-badge img { height: 44px !important; }
+	.elementor-26 .elementor-element.elementor-element-eae527c.elementor-hidden-tablet,
+	.elementor-26 .elementor-element.elementor-element-eae527c.elementor-hidden-mobile_extra {
+		margin-right: 90px !important;
+	}
+}
+
+@media (max-width: 420px) {
+	#logo a img { width: 128px; }
+}

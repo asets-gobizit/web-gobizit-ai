@@ -57,8 +57,25 @@ footer a{color:#fff;text-decoration:none;margin-right:18px}
  .promo{position:absolute;top:0;left:0;right:0;height:0;padding:0;background:none;z-index:50}
  .promo b,.promo .claim{display:none}
  .promo .in{display:block;padding:0}
- .lang{position:absolute;top:24px;right:104px;transform:none}
+ .lang{position:absolute;top:22px;right:54px;transform:none;z-index:60}
  .nav .demo{display:none}
  .nav .in{padding:8px 12px}
  .nav .logo img{height:56px}
+}
+
+/* AI Enabled Partner badge — replaces header Book a Demo */
+.nav .cta{display:flex;align-items:center;gap:14px}
+.nav .badge-link{display:block;line-height:0;flex:0 0 auto}
+.nav .badge{height:65px;width:auto;display:block}
+@media(max-width:1180px){
+ .nav .cta .wa{display:none}
+ .nav .badge{height:44px}
+}
+@media(max-width:767px){
+ .nav .badge{height:36px}
+ .nav .badge-link{margin-right:86px}
+ .nav .burger summary{
+   width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;
+   font-size:22px;line-height:1;
+ }
 }
