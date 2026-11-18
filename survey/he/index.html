@@ -725,7 +725,7 @@
 
     var controller = new AbortController();
     var timer = setTimeout(function () { controller.abort(); }, 9000);
-    fetch('/api/survey-recommend', {
+    fetch('/api/survey-recommend/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
