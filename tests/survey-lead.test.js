@@ -86,6 +86,20 @@ test('the email body lists the answers, comment, score, and a sober explanation'
   assert.match(message.text, /כללי הניקוד/);
   assert.match(message.text, /מרכזים לידים/);
   assert.doesNotMatch(message.text, /מובטח|נחסוך לכם/);
+  assert.doesNotMatch(message.text, /הכנסה בסיכון/);
+
+  const withCost = validateLead(leadBody({
+    costEstimate: { missedPerWeek: 25, percentCustomers: 15, averageValue: 1500 }
+  }));
+  const costMessage = buildMessage(
+    withCost.lead,
+    withCost.result,
+    { source: 'rules', text: 'הסבר' },
+    '18.11.2026, 14:00'
+  );
+  assert.equal(withCost.lead.costEstimate.monthly, 24356);
+  assert.match(costMessage.text, /\$24,356/);
+  assert.equal(validateLead(leadBody({ costEstimate: { missedPerWeek: 0, percentCustomers: 15, averageValue: 1500 } })).lead.costEstimate, null);
 });
 
 test('missing mail settings skip the send and a honeypot is dropped', async () => {
