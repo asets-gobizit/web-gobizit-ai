@@ -23,7 +23,9 @@
 
 'use strict';
 
-const LLM_TIMEOUT_MS = 8000;
+const EXTRA = require('../survey/locales');
+
+const LLM_TIMEOUT_MS = 12000;
 const MAX_BODY_BYTES = 8192;
 const IP_WINDOW_MS = 10 * 60 * 1000;
 const IP_LIMIT = 30;
@@ -188,8 +190,22 @@ function sendJson(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function fallback(res) {
-  sendJson(res, 200, { source: 'rules', fallback: true });
+function fallback(res, reason) {
+  const code = typeof reason === 'string' && /^[a-z0-9_]{1,40}$/.test(reason) ? reason : 'error';
+  sendJson(res, 200, { source: 'rules', fallback: true, reason: code });
+}
+
+async function upstreamReason(response) {
+  let text = '';
+  try {
+    text = await response.text();
+  } catch (error) {
+    text = '';
+  }
+  const sample = String(text || '').slice(0, 500).toLowerCase();
+  if (response.status === 402 || /credit|quota|billing|insufficient/.test(sample)) return 'out_of_credit';
+  if (response.status === 429) return 'rate_limit';
+  return 'upstream_' + response.status;
 }
 
 function readRawBody(req) {
@@ -345,20 +361,31 @@ function validateBody(body) {
   return { answers: answers, website: website };
 }
 
-function computeResult(raw) {
+function quizLang(value) {
+  return value === 'en' || value === 'es' ? value : 'he';
+}
+
+function computeResult(raw, lang) {
   const answers = normalizeAll(raw);
   if (!answers) return null;
+  const code = quizLang(lang);
+  const pack = EXTRA[code] || null;
+  const questions = pack ? pack.questions : QUESTIONS;
+  const pain = pack ? pack.pain : PAIN;
+  const notes = pack ? pack.notes : null;
 
   const points = [];
   let score = 0;
   for (let i = 1; i <= 6; i += 1) {
-    const labels = answers[i].map((n) => QUESTIONS[i].options[n]);
+    const labels = answers[i].map((n) => questions[i].options[n]);
     let pts = answers[i][0];
     let note = '';
     if (i === 2) {
       pts = q3Points(answers[i]);
       if (answers[i].length > 1) {
-        note = 'נבחרו כמה מקומות, ולכן הניקוד הוא הגבוה מביניהם ועד 2.';
+        note = notes
+          ? notes.multi
+          : 'נבחרו כמה מקומות, ולכן הניקוד הוא הגבוה מביניהם ועד 2.';
       }
     }
     score += pts;
@@ -372,38 +399,49 @@ function computeResult(raw) {
   const adjustments = [];
   if (hasChoice(answers[2], 0) && level === 'C') {
     level = 'B';
-    adjustments.push('נבחר "וואטסאפ, מחברת או בראש" בשאלה 3, ולכן הרמה לא עולה מעל בדרך.');
+    adjustments.push(notes
+      ? notes.cap
+      : 'נבחר "וואטסאפ, מחברת או בראש" בשאלה 3, ולכן הרמה לא עולה מעל בדרך.');
   }
   if (hasChoice(answers[2], 3) && score <= 6 && level === 'A') {
     level = 'B';
-    adjustments.push('נבחר CRM מעודכן בשאלה 3 והציון 6 או פחות, ולכן הרמה עלתה לבדרך.');
+    adjustments.push(notes
+      ? notes.crm
+      : 'נבחר CRM מעודכן בשאלה 3 והציון 6 או פחות, ולכן הרמה עלתה לבדרך.');
   }
 
   const addons = [];
   if (hasChoice(answers[3], 0) || hasChoice(answers[3], 1)) {
-    addons.push('מענה מיידי: סוכן צ\'אט לאתר, או סוכן טלפוני לעסקים שרוב הפניות שלהם מגיעות בטלפון.');
+    addons.push(notes
+      ? notes.response
+      : 'מענה מיידי: סוכן צ\'אט לאתר, או סוכן טלפוני לעסקים שרוב הפניות שלהם מגיעות בטלפון.');
   }
   if (hasChoice(answers[1], 0)) {
-    addons.push('נוכחות בסיסית: אתר פשוט עם טופס או צ\'אט שמעבירים את הפנייה ישר לוואטסאפ או ל-CRM.');
+    addons.push(notes
+      ? notes.site
+      : 'נוכחות בסיסית: אתר פשוט עם טופס או צ\'אט שמעבירים את הפנייה ישר לוואטסאפ או ל-CRM.');
   }
   if (hasChoice(answers[4], 0) || hasChoice(answers[4], 1)) {
     const hours = hasChoice(answers[4], 0) ? 40 : 30;
-    addons.push('הערכה גסה: בערך ' + hours + ' שעות בחודש של עבודה ידנית.');
+    addons.push(notes
+      ? notes.hours(hours)
+      : 'הערכה גסה: בערך ' + hours + ' שעות בחודש של עבודה ידנית.');
   }
 
   const chapters = [];
   const directions = [];
   answers[7].forEach((painIndex) => {
-    const pain = PAIN[painIndex];
-    if (chapters.indexOf(pain.chapter) === -1) chapters.push(pain.chapter);
-    if (directions.indexOf(pain.direction) === -1) directions.push(pain.direction);
+    const item = pain[painIndex];
+    if (chapters.indexOf(item.chapter) === -1) chapters.push(item.chapter);
+    if (directions.indexOf(item.direction) === -1) directions.push(item.direction);
   });
   const clinic = hasChoice(answers[0], 0);
-  if (clinic && chapters.indexOf(PAIN[5].chapter) === -1) {
-    chapters.push(PAIN[5].chapter);
+  if (clinic && chapters.indexOf(pain[5].chapter) === -1) {
+    chapters.push(pain[5].chapter);
   }
 
   return {
+    lang: code,
     score: score,
     level: level,
     addons: addons,
@@ -417,6 +455,8 @@ function computeResult(raw) {
 }
 
 function explainDeterministic(result) {
+  const pack = result && EXTRA[result.lang];
+  if (pack && typeof pack.explain === 'function') return pack.explain(result);
   const lines = [
     'הציון הוא סכום שאלות 2 עד 7. כל שאלה נותנת 0 עד 3 נקודות, עד 18.'
   ];
@@ -442,6 +482,8 @@ function explainDeterministic(result) {
 }
 
 function buildPrompt(raw, result, website) {
+  const pack = result && EXTRA[result.lang];
+  if (pack && typeof pack.prompt === 'function') return pack.prompt(result, website);
   const answers = result && result.answers ? result.answers : normalizeAll(raw);
   const lines = QUESTIONS.map((q, i) => (
     (i + 1) + '. ' + q.title + ' ' + answers[i].map((n) => q.options[n]).join(' · ')
@@ -554,7 +596,7 @@ function openaiText(data) {
   return '';
 }
 
-async function callModel(provider, prompt) {
+async function callModel(provider, prompt, systemPrompt) {
   const timeout = llmTimeoutMs();
   const signal = AbortSignal.timeout(timeout);
   if (provider.provider === 'anthropic') {
@@ -570,12 +612,12 @@ async function callModel(provider, prompt) {
       body: JSON.stringify({
         model: provider.model,
         max_tokens: 1024,
-        system: SYSTEM_PROMPT,
+        system: systemPrompt || SYSTEM_PROMPT,
         messages: [{ role: 'user', content: prompt }]
       })
     });
     if (!response.ok) {
-      return { error: 'upstream_' + response.status };
+      return { error: await upstreamReason(response) };
     }
     return { text: anthropicText(await response.json()) };
   }
@@ -594,25 +636,25 @@ async function callModel(provider, prompt) {
       reasoning_effort: 'none',
       response_format: { type: 'json_object' },
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'system', content: systemPrompt || SYSTEM_PROMPT },
         { role: 'user', content: prompt }
       ]
     })
   });
   if (!response.ok) {
-    return { error: 'upstream_' + response.status };
+    return { error: await upstreamReason(response) };
   }
   return { text: openaiText(await response.json()) };
 }
 
 async function handler(req, res) {
   if (!req || req.method !== 'POST') {
-    sendJson(res, 405, { source: 'rules', fallback: true });
+    sendJson(res, 405, { source: 'rules', fallback: true, reason: 'method' });
     return;
   }
 
   if (!allowRequest(clientIp(req), Date.now())) {
-    sendJson(res, 429, { source: 'rules', fallback: true });
+    sendJson(res, 429, { source: 'rules', fallback: true, reason: 'rate_limit' });
     return;
   }
 
@@ -620,56 +662,59 @@ async function handler(req, res) {
   try {
     const raw = await readRawBody(req);
     if (!raw || raw.length === 0) {
-      sendJson(res, 400, { source: 'rules', fallback: true });
+      sendJson(res, 400, { source: 'rules', fallback: true, reason: 'invalid' });
       return;
     }
     if (raw.length > MAX_BODY_BYTES) {
-      sendJson(res, 413, { source: 'rules', fallback: true });
+      sendJson(res, 413, { source: 'rules', fallback: true, reason: 'too_large' });
       return;
     }
     parsed = JSON.parse(raw.toString('utf8'));
   } catch (error) {
     const status = error && error.code === 'too_large' ? 413 : 400;
-    sendJson(res, status, { source: 'rules', fallback: true });
+    sendJson(res, status, { source: 'rules', fallback: true, reason: status === 413 ? 'too_large' : 'invalid' });
     return;
   }
 
   const validated = validateBody(parsed);
   if (validated.error) {
-    sendJson(res, 400, { source: 'rules', fallback: true });
+    sendJson(res, 400, { source: 'rules', fallback: true, reason: 'invalid' });
     return;
   }
 
-  const result = computeResult(validated.answers);
+  const lang = quizLang(parsed && parsed.lang);
+  const result = computeResult(validated.answers, lang);
   const provider = selectProvider(process.env);
   if (!provider) {
-    fallback(res);
+    fallback(res, 'no_key');
     return;
   }
 
   const prompt = buildPrompt(validated.answers, result, validated.website);
+  const system = (EXTRA[lang] && EXTRA[lang].system) || SYSTEM_PROMPT;
   let modelResult;
   try {
-    modelResult = await callModel(provider, prompt);
+    modelResult = await callModel(provider, prompt, system);
   } catch (error) {
     const reason = error && (error.name === 'TimeoutError' || error.name === 'AbortError')
       ? 'timeout'
       : 'upstream_error';
     console.warn('survey-recommend fallback', reason);
-    fallback(res);
+    fallback(res, reason);
     return;
   }
 
   if (!modelResult || modelResult.error) {
-    console.warn('survey-recommend fallback', (modelResult && modelResult.error) || 'upstream_error');
-    fallback(res);
+    const reason = (modelResult && modelResult.error) || 'upstream_error';
+    console.warn('survey-recommend fallback', reason);
+    fallback(res, reason);
     return;
   }
 
   const recommendation = parseRecommendation(modelResult.text);
   if (!recommendation) {
     console.warn('survey-recommend fallback', 'unusable_output');
-    fallback(res);
+    fallback(res, 'unusable_output');
     return;
   }
 
@@ -692,7 +737,9 @@ handler._test = {
   LEVELS: LEVELS,
   QUESTIONS: QUESTIONS,
   explainDeterministic: explainDeterministic,
-  normalizeAll: normalizeAll
+  normalizeAll: normalizeAll,
+  locale: function (lang) { return EXTRA[quizLang(lang)] || null; },
+  quizLang: quizLang
 };
 
 module.exports = handler;

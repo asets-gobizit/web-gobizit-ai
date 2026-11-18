@@ -97,7 +97,7 @@
     color: var(--navy);
     border: 2px solid var(--light-blue);
     margin-bottom: 12px;
-    text-align: right;
+    text-align: start;
     font-weight: 500;
     transition: border-color .12s, background .12s;
   }
@@ -453,10 +453,48 @@
     #screen-result .logo { width: 160px; margin: 0 0 28px; }
     #screen-result .result-title { font-size: 1.7rem; }
   }
+  .lang-picker {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 auto 14px;
+    max-width: 100%;
+  }
+  .lang-picker a {
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background: transparent;
+  }
+  .lang-picker a[aria-current="page"] {
+    background: #fff;
+    border-color: var(--navy);
+  }
+  .lang-picker a:hover { background: rgba(255,255,255,.75); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav class="lang-picker" aria-label="Language">
+    <a href="/survey/he/" data-survey-lang="he" hreflang="he" lang="he" aria-current="page">עברית</a>
+    <a href="/survey/en/" data-survey-lang="en" hreflang="en" lang="en">English</a>
+    <a href="/survey/es/" data-survey-lang="es" hreflang="es" lang="es">Español</a>
+  </nav>
+  <script>
+  (function () {
+    var host = location.hostname === 'survey.gobizit.ai';
+    var links = document.querySelectorAll('.lang-picker a');
+    for (var i = 0; i < links.length; i++) {
+      var code = links[i].getAttribute('data-survey-lang');
+      links[i].href = (host ? '/' : '/survey/') + code + '/';
+    }
+  })();
+  </script>
 
   <!-- Intro screen -->
   <section id="screen-intro" class="card">
@@ -515,7 +553,7 @@
     <ul class="aside-list">
       <li>ציון מתוך 18 ורמה: בסיס, בדרך, או מוכנים.</li>
       <li>3 צעדים מומלצים לפי התשובות, כולל ההתאמות על אתר, מענה ושעות ידניות.</li>
-      <li>אם המודל זמין, תופיע גם המלצה אוטומטית שנוצרה על ידי AI. בלי מפתח, או אם הקריאה נכשלת, נשארת ההמלצה הקבועה.</li>
+      <li>המלצה לפי התשובות, עם 3 צעדים מומלצים.</li>
       <li>הפרקים המתאימים בחוברת, הורדת 30 הפרומפטים, וקישור לשיחת אבחון חינמית.</li>
     </ul>
     <p class="aside-note">השם והאימייל לא נשלחים למודל. אתר העסק, אם מולא, נשלח כטקסט בלבד ולא נסרק.</p>
@@ -549,12 +587,12 @@
           <input type="range" id="svy-cost-i1" min="1" max="100" value="25">
           <label for="svy-cost-i2">כמה אחוז מהן היו הופכות ללקוחות <output id="svy-cost-o2" for="svy-cost-i2">15%</output></label>
           <input type="range" id="svy-cost-i2" min="1" max="60" value="15">
-          <label for="svy-cost-i3">שווי ממוצע של לקוח חדש <output id="svy-cost-o3" for="svy-cost-i3">$1,500</output></label>
+          <label for="svy-cost-i3">שווי ממוצע של לקוח חדש <output id="svy-cost-o3" for="svy-cost-i3">€1,500</output></label>
           <input type="range" id="svy-cost-i3" min="100" max="10000" step="100" value="1500">
         </div>
         <div class="cost-res">
           <small>הכנסה בסיכון בכל חודש</small>
-          <strong id="svy-cost-res">$24,356</strong>
+          <strong id="svy-cost-res">€24,356</strong>
           <p>לפי המספרים שלכם × 4.33 שבועות.</p>
         </div>
       </div>
@@ -921,6 +959,7 @@
   function loadAiRecommendation(res) {
     var requestId = ++aiRequest;
     var payload = {
+      lang: 'he',
       answers: answers.slice(),
       score: res.score,
       level: res.level
@@ -929,23 +968,34 @@
     if (website) payload.website = website.slice(0, 200);
 
     var controller = new AbortController();
-    var timer = setTimeout(function () { controller.abort(); }, 9000);
+    var timer = setTimeout(function () { controller.abort(); }, 13000);
+    recommendMeta = { source: 'rules', reason: 'timeout' };
     fetch('/api/survey-recommend/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
       signal: controller.signal
     }).then(function (response) {
-      return response.json();
+      return response.json().catch(function () { return null; });
     }).then(function (data) {
       if (requestId !== aiRequest) return;
-      applyAiRecommendation(data);
-    }).catch(function () {
-      // Silent rule-based fallback: the result screen is already filled.
+      if (data && data.source === 'ai') applyAiRecommendation(data);
+      if (shownRecommendation && shownRecommendation.source === 'ai') {
+        recommendMeta = { source: 'ai', reason: '' };
+        return;
+      }
+      var reason = data && typeof data.reason === 'string' ? data.reason : 'rules';
+      if (!/^[a-z0-9_]{1,40}$/.test(reason)) reason = 'rules';
+      recommendMeta = { source: 'rules', reason: reason };
+    }).catch(function (err) {
+      if (requestId !== aiRequest) return;
+      var aborted = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
+      recommendMeta = { source: 'rules', reason: aborted ? 'timeout' : 'error' };
     }).finally(function () {
       clearTimeout(timer);
       if (requestId !== aiRequest || !pendingLead) return;
       pendingLead.recommendation = shownRecommendation;
+      pendingLead.recommendMeta = recommendMeta;
       pendingLead.costEstimate = readCostEstimate();
       postLead(pendingLead);
     });
@@ -953,6 +1003,7 @@
 
   var pendingLead = null;
   var shownRecommendation = null;
+  var recommendMeta = { source: 'rules', reason: '' };
 
   function postLead(data) {
     fetch('/api/survey-lead/', {
@@ -1020,6 +1071,7 @@
 
     var res = computeResult();
     pendingLead = {
+      lang: 'he',
       name: name,
       email: email,
       website: website,
@@ -1043,7 +1095,7 @@
 
   // Same formula as gobizit.ai/solutions/ai-website-assistant/:
   // missed per week × percent that become customers × average value × 4.33 weeks.
-  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function money(n) { return '€' + Math.round(n).toLocaleString('en-US'); }
   function readCostEstimate() {
     var missed = document.getElementById('svy-cost-i1');
     var percent = document.getElementById('svy-cost-i2');

@@ -98,7 +98,37 @@ test('the email body lists the answers, comment, score, and a sober explanation'
     '18.11.2026, 14:00'
   );
   assert.equal(withCost.lead.costEstimate.monthly, 24356);
-  assert.match(costMessage.text, /\$24,356/);
+  assert.match(costMessage.text, /€24,356/);
+  assert.match(costMessage.text, /שפה: עברית/);
+  assert.match(message.text, /^📋 המלצה כללית \(ללא AI\)\nסיבה: שגיאת AI\n/);
+  const aiLead = validateLead(leadBody({
+    recommendMeta: { source: 'rules', reason: 'out_of_credit' },
+    recommendation: {
+      source: 'rules',
+      summary: 'הצעדים הראשונים פשוטים.',
+      steps: ['מרכזים לידים', 'מגדירים הודעת פתיחה', 'כותבים עם AI']
+    }
+  }));
+  const creditMessage = buildMessage(aiLead.lead, aiLead.result, { source: 'rules', text: 'הסבר' }, '18.11.2026, 14:00');
+  assert.match(creditMessage.text, /^📋 המלצה כללית \(ללא AI\)\nסיבה: אין קרדיט\n/);
+  const keyLead = validateLead(leadBody({ recommendMeta: { source: 'rules', reason: 'no_key' } }));
+  assert.match(buildMessage(keyLead.lead, keyLead.result, { source: 'rules', text: 'הסבר' }, '18.11.2026, 14:00').text, /סיבה: אין מפתח API/);
+  const slowLead = validateLead(leadBody({ recommendMeta: { source: 'rules', reason: 'timeout' } }));
+  assert.match(buildMessage(slowLead.lead, slowLead.result, { source: 'rules', text: 'הסבר' }, '18.11.2026, 14:00').text, /סיבה: תם הזמן/);
+  const english = validateLead(leadBody({
+    lang: 'en',
+    name: 'Dana Cohen',
+    comment: 'Leads are scattered.',
+    recommendMeta: { source: 'ai', reason: 'should-not-stick' }
+  }));
+  const englishMessage = buildMessage(english.lead, english.result, { source: 'rules', text: 'Score explanation.' }, '18.11.2026, 14:00');
+  assert.match(englishMessage.text, /Language: English/);
+  assert.match(englishMessage.text, /In WhatsApp, a notebook, or my head/);
+  assert.match(englishMessage.text, /^✨ המלצה מותאמת אישית \(AI\)\n/);
+  assert.doesNotMatch(englishMessage.text, /סיבה:/);
+  assert.match(englishMessage.html, /color:#6b7280/);
+  assert.doesNotMatch(englishMessage.text, /should-not-stick/);
+  assert.doesNotMatch(costMessage.text, /\$/);
   assert.equal(validateLead(leadBody({ costEstimate: { missedPerWeek: 0, percentCustomers: 15, averageValue: 1500 } })).lead.costEstimate, null);
 });
 

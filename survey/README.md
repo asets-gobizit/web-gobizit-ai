@@ -7,6 +7,10 @@ Hebrew quiz for the 20 Nov 2026 networking event. The English site is unchanged.
 | This repo | `survey/he/index.html` and `survey/he/gift-ai-prompts-he.pdf` |
 | Every deployment, including preview | `/survey/he/` |
 | Production, after the domain below is added | `https://survey.gobizit.ai/he` |
+| English | `/survey/en/` and `https://survey.gobizit.ai/en` |
+| Spanish (Spain) | `/survey/es/` and `https://survey.gobizit.ai/es` |
+
+Hebrew stays right to left. English and Spanish are left to right. A language picker at the top links `/he`, `/en`, and `/es` on `survey.gobizit.ai`, and `/survey/he/`, `/survey/en/`, `/survey/es/` on every other host. Amounts on all three pages, including the missed-enquiry calculator and the lead email, use euros (`€24,356`). The recommendation is written in the page language. The root of `survey.gobizit.ai` still opens the Hebrew quiz.
 
 `https://survey.gobizit.ai/` and `https://survey.gobizit.ai/he/` serve the same page. The PDF link on the result screen is relative (`gift-ai-prompts-he.pdf`), so it resolves next to the page on both URLs.
 
@@ -52,7 +56,7 @@ If `AI_PROVIDER=anthropic` and only the OpenAI key is set, the endpoint does not
 
 Apply the variables to Production when the real recommendations should go live. A deployment with no key still serves the quiz: the endpoint returns `{ "source": "rules", "fallback": true }` and the page keeps the built-in recommendation.
 
-The server calls Anthropic `POST https://api.anthropic.com/v1/messages` or OpenAI `POST https://api.openai.com/v1/chat/completions`. The upstream call is aborted at 8 seconds. A timeout, HTTP error, or unusable reply uses the same silent fallback.
+The server calls Anthropic `POST https://api.anthropic.com/v1/messages` or OpenAI `POST https://api.openai.com/v1/chat/completions`. The upstream call is aborted at 12 seconds. A missing key, a timeout, an out-of-credit response, or any other model error uses the same silent fallback. The visitor's screen does not say that the model failed. The lead email to neo@ starts, in Hebrew on every language, with `✨ המלצה מותאמת אישית (AI)` or `📋 המלצה כללית (ללא AI)` plus `סיבה: אין מפתח API`, `סיבה: אין קרדיט`, `סיבה: תם הזמן`, or `סיבה: שגיאת AI`.
 
 The model receives the eight answers as the fixed Hebrew labels, the score and level computed on the server, the level's rule, and the optional website string. It does not receive the name, email, or general comment. The website is not fetched.
 
