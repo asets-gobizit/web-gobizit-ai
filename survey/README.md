@@ -10,7 +10,7 @@ Hebrew quiz for the 20 Nov 2026 networking event. The English site is unchanged.
 
 `https://survey.gobizit.ai/` and `https://survey.gobizit.ai/he/` serve the same page. The PDF link on the result screen is relative (`gift-ai-prompts-he.pdf`), so it resolves next to the page on both URLs.
 
-The recommend API is `POST /api/survey-recommend` on the same host. It is not rewritten onto the quiz folder.
+The recommend API is `POST /api/survey-recommend/` on the same host. The trailing slash matches this project's `trailingSlash` setting, and a rewrite passes that path to the function. It is not rewritten onto the quiz folder.
 
 ## Cloudflare DNS
 
