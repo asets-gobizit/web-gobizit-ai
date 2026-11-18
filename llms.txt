@@ -26,7 +26,6 @@
 
 ## Specialist solutions
 
-- [Darwin AI](https://gobizit.ai/services/darwin-ai/): B2B sales intelligence and account research.
 - [Hunter](https://gobizit.ai/services/hunter-io/): Verified lead discovery and email outreach setup.
 - [Outplay AI](https://gobizit.ai/services/outplay-ai/): Multichannel sales engagement and follow-up automation.
 - [SuperAGI](https://gobizit.ai/services/super-agi/): Scalable B2B outbound research and outreach.
