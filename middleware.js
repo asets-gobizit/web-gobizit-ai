@@ -1,11 +1,19 @@
-import { next, rewrite } from '@vercel/functions';
-import { createRequire } from 'node:module';
+import { next, rewrite } from '@vercel/functions/middleware';
 
-const { surveyDestination } = createRequire(import.meta.url)('./survey/host-route.js');
+const SURVEY_HOST = 'survey.gobizit.ai';
+
+export function surveyDestination(host, pathname) {
+  const name = String(host || '').replace(/:\d+$/, '').trim().toLowerCase();
+  if (name !== SURVEY_HOST) return null;
+  if (pathname === '/' || pathname === '') return '/survey/he/';
+  if (pathname === '/he' || pathname === '/he/') return '/survey/he/';
+  if (pathname === '/en' || pathname === '/en/') return '/survey/en/';
+  if (pathname === '/es' || pathname === '/es/') return '/survey/es/';
+  return null;
+}
 
 export const config = {
-  runtime: 'nodejs',
-  matcher: ['/', '/he', '/he/:path*', '/en', '/en/:path*', '/es', '/es/:path*']
+  matcher: ['/', '/he', '/he/', '/en', '/en/', '/es', '/es/']
 };
 
 export default function middleware(request) {
