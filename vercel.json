@@ -171,7 +171,7 @@
   "framework": null,
   "functions": {
     "api/survey-recommend.js": {
-      "maxDuration": 15
+      "maxDuration": 20
     },
     "api/survey-lead.js": {
       "maxDuration": 20
@@ -197,6 +197,36 @@
       "source": "/he/:path*",
       "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
       "destination": "/survey/he/:path*"
+    },
+    {
+      "source": "/en",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/en/"
+    },
+    {
+      "source": "/en/",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/en/"
+    },
+    {
+      "source": "/en/:path*",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/en/:path*"
+    },
+    {
+      "source": "/es",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/es/"
+    },
+    {
+      "source": "/es/",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/es/"
+    },
+    {
+      "source": "/es/:path*",
+      "has": [{ "type": "host", "value": "survey.gobizit.ai" }],
+      "destination": "/survey/es/:path*"
     },
     {
       "source": "/api/zoho-mail-webhook/",
@@ -245,6 +275,24 @@
     },
     {
       "source": "/survey/he/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/survey/en/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/survey/es/",
       "headers": [
         {
           "key": "Cache-Control",

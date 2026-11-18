@@ -188,7 +188,7 @@ test('no key returns the rule fallback and does not call the model', async () =>
       website: 'https://example.co.il'
     });
     assert.equal(res.status, 200);
-    assert.deepEqual(res.json, { source: 'rules', fallback: true });
+    assert.deepEqual(res.json, { source: 'rules', fallback: true, reason: 'no_key' });
     assert.equal(calls, 0);
     assert.equal(res.headers['cache-control'], 'no-store');
   } finally {
@@ -284,6 +284,7 @@ test('upstream failure and timeout fall back without an error page', async () =>
     const failed = await call({ answers: sampleAnswers });
     assert.equal(failed.status, 200);
     assert.equal(failed.json.fallback, true);
+    assert.equal(failed.json.reason, 'upstream_503');
 
     process.env.NODE_ENV = 'test';
     process.env.SURVEY_LLM_TIMEOUT_MS = '40';
@@ -298,6 +299,7 @@ test('upstream failure and timeout fall back without an error page', async () =>
     });
     const timed = await call({ answers: sampleAnswers });
     assert.equal(timed.json.fallback, true);
+    assert.equal(timed.json.reason, 'timeout');
     assert.equal(timed.status, 200);
   } finally {
     global.fetch = originalFetch;
@@ -319,6 +321,7 @@ test('invalid input is rejected and a bad model reply falls back', async () => {
     }), { status: 200 });
     const messy = await call({ answers: sampleAnswers });
     assert.equal(messy.json.fallback, true);
+    assert.equal(messy.json.reason, 'unusable_output');
   } finally {
     global.fetch = originalFetch;
     restoreEnv(prev);
