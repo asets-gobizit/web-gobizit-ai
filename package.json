@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "@vercel/functions": "^3.11.3",
     "nodemailer": "^7.0.13"
   }
 }
