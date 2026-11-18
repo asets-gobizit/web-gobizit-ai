@@ -163,6 +163,59 @@
     white-space: nowrap;
     border: 0;
   }
+  .cost-calc {
+    background: #fff;
+    border: 2px solid var(--light-blue);
+    border-radius: 18px;
+    padding: 20px 16px 8px;
+    margin-top: 4px;
+  }
+  .cost-calc h2 {
+    font-size: 1.35rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .cost-intro {
+    margin-bottom: 16px;
+  }
+  .cost-calc label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .cost-calc output {
+    color: var(--blue);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .cost-calc input[type="range"] {
+    width: 100%;
+    margin: 0 0 16px;
+    accent-color: var(--blue);
+  }
+  .cost-res {
+    background: var(--light-blue);
+    border-radius: 16px;
+    padding: 18px 14px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .cost-res small {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .cost-res strong {
+    display: block;
+    font-size: 2.2rem;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .cost-res p { margin: 0; font-size: 0.95rem; }
   .progress-label {
     font-size: 0.95rem;
     font-weight: 700;
@@ -388,6 +441,15 @@
     }
     .form-aside { display: block; }
     .result-aside { position: sticky; top: 24px; }
+    #screen-result .result-main { grid-column: 1; grid-row: 1; }
+    #screen-result .result-aside { grid-column: 2; grid-row: 1; }
+    #screen-result .cost-calc { grid-column: 1 / -1; grid-row: 2; }
+    .cost-calc-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr);
+      gap: 28px;
+      align-items: center;
+    }
     #screen-result .logo { width: 160px; margin: 0 0 28px; }
     #screen-result .result-title { font-size: 1.7rem; }
   }
@@ -478,6 +540,25 @@
     <div id="result-addons"></div>
     <div class="chapters" id="result-chapters"></div>
     </div>
+    <section class="cost-calc" id="svy-cost" aria-labelledby="svy-cost-title">
+      <div class="cost-calc-grid">
+        <div>
+          <h2 id="svy-cost-title">כמה עולות לכם פניות ושיחות שלא נענות?</h2>
+          <p class="cost-intro">הזיזו את המחוונים. המספרים שלכם, החישוב שלכם.</p>
+          <label for="svy-cost-i1">פניות או שיחות שלא נענות בשבוע <output id="svy-cost-o1" for="svy-cost-i1">25</output></label>
+          <input type="range" id="svy-cost-i1" min="1" max="100" value="25">
+          <label for="svy-cost-i2">כמה אחוז מהן היו הופכות ללקוחות <output id="svy-cost-o2" for="svy-cost-i2">15%</output></label>
+          <input type="range" id="svy-cost-i2" min="1" max="60" value="15">
+          <label for="svy-cost-i3">שווי ממוצע של לקוח חדש <output id="svy-cost-o3" for="svy-cost-i3">$1,500</output></label>
+          <input type="range" id="svy-cost-i3" min="100" max="10000" step="100" value="1500">
+        </div>
+        <div class="cost-res">
+          <small>הכנסה בסיכון בכל חודש</small>
+          <strong id="svy-cost-res">$24,356</strong>
+          <p>לפי המספרים שלכם × 4.33 שבועות.</p>
+        </div>
+      </div>
+    </section>
     <aside class="result-aside">
     <p class="closing-line">רוצים לדעת מה כדאי לאוטמט קודם אצלכם? שיחת אבחון חינמית של 30 דקות, בלי מצגת מכירות ובלי התחייבות.</p>
     <a class="btn btn-cta mb16" href="https://gobizit.zohobookings.com/free" target="_blank" rel="noopener">קבעו שיחת אבחון חינם</a>
@@ -865,6 +946,7 @@
       clearTimeout(timer);
       if (requestId !== aiRequest || !pendingLead) return;
       pendingLead.recommendation = shownRecommendation;
+      pendingLead.costEstimate = readCostEstimate();
       postLead(pendingLead);
     });
   }
@@ -958,6 +1040,40 @@
     var count = document.getElementById('lead-comment').value.length;
     document.getElementById('comment-count').textContent = count + '/1000';
   });
+
+  // Same formula as gobizit.ai/solutions/ai-website-assistant/:
+  // missed per week × percent that become customers × average value × 4.33 weeks.
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function readCostEstimate() {
+    var missed = document.getElementById('svy-cost-i1');
+    var percent = document.getElementById('svy-cost-i2');
+    var average = document.getElementById('svy-cost-i3');
+    if (!missed || !percent || !average) return null;
+    return {
+      missedPerWeek: Number(missed.value),
+      percentCustomers: Number(percent.value),
+      averageValue: Number(average.value)
+    };
+  }
+  (function () {
+    var i1 = document.getElementById('svy-cost-i1');
+    var i2 = document.getElementById('svy-cost-i2');
+    var i3 = document.getElementById('svy-cost-i3');
+    if (!i1 || !i2 || !i3) return;
+    var o1 = document.getElementById('svy-cost-o1');
+    var o2 = document.getElementById('svy-cost-o2');
+    var o3 = document.getElementById('svy-cost-o3');
+    var res = document.getElementById('svy-cost-res');
+    function calc() {
+      var a = +i1.value, b = +i2.value, c = +i3.value;
+      o1.textContent = a;
+      o2.textContent = b + '%';
+      o3.textContent = money(c);
+      res.textContent = money(a * 4.33 * (b / 100) * c);
+    }
+    [i1, i2, i3].forEach(function (input) { input.addEventListener('input', calc); });
+    calc();
+  })();
 })();
 </script>
 </body>

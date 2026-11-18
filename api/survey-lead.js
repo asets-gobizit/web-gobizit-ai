@@ -178,10 +178,33 @@ function validateLead(body) {
       website: website,
       consent: true,
       comment: comment,
-      recommendation: shownRecommendation(body.recommendation, result)
+      recommendation: shownRecommendation(body.recommendation, result),
+      costEstimate: costEstimate(body.costEstimate)
     },
     result: result
   };
+}
+
+function costEstimate(value) {
+  if (value == null) return null;
+  if (typeof value !== 'object') return null;
+  const missed = Number(value.missedPerWeek);
+  const percent = Number(value.percentCustomers);
+  const average = Number(value.averageValue);
+  if (![missed, percent, average].every((n) => Number.isFinite(n))) return null;
+  if (missed < 1 || missed > 100 || percent < 1 || percent > 60) return null;
+  if (average < 100 || average > 10000) return null;
+  const monthly = Math.round(missed * 4.33 * (percent / 100) * average);
+  return {
+    missedPerWeek: missed,
+    percentCustomers: percent,
+    averageValue: average,
+    monthly: monthly
+  };
+}
+
+function formatUsd(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
 }
 
 function answerLines(result) {
@@ -218,10 +241,22 @@ function buildMessage(lead, result, explanation, when) {
     '',
     'איך הגענו לזה (' + explainLabel + ')',
     explanation.text
-  ].join('\n');
+  ];
+  if (lead.costEstimate) {
+    const cost = lead.costEstimate;
+    text.push(
+      '',
+      'אומדן על מסך התוצאה: פניות או שיחות שלא נענות',
+      'בשבוע: ' + cost.missedPerWeek,
+      'אחוז שהיו הופכות ללקוחות: ' + cost.percentCustomers + '%',
+      'שווי ממוצע ללקוח: ' + formatUsd(cost.averageValue),
+      'הכנסה בסיכון בחודש: ' + formatUsd(cost.monthly),
+      'החישוב: כמות בשבוע × 4.33 × האחוז × השווי הממוצע.'
+    );
+  }
   return {
     subject: oneLine('בדיקת AI לעסק — ' + lead.name + ' — ' + result.score + '/18 ' + result.level, 140),
-    text: text
+    text: text.join('\n')
   };
 }
 
