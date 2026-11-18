@@ -106,6 +106,32 @@ test('scoring and adjustment rules match the quiz spec', () => {
   assert.match(thirty.addons.join(' '), /30/);
 });
 
+test('multi-select scoring caps split lead systems and keeps every pain', () => {
+  const { explainDeterministic } = handler._test;
+  const split = computeResult([
+    [0, 2],
+    [3],
+    [0, 3],
+    [3],
+    [3],
+    [3],
+    [3],
+    [0, 1]
+  ]);
+  assert.equal(split.points[1].points, 2);
+  assert.equal(split.score, 17);
+  assert.equal(split.level, 'B');
+  assert.match(split.chapters.join(' '), /פרק 01/);
+  assert.match(split.chapters.join(' '), /פרק 02/);
+  assert.match(split.chapters.join(' '), /פרק 06/);
+  assert.match(explainDeterministic(split), /עד 2/);
+  assert.doesNotMatch(explainDeterministic(split), /דנה|secret@/);
+
+  const onlyCrm = computeResult([1, 3, [3], 3, 3, 3, 3, [5]]);
+  assert.equal(onlyCrm.score, 18);
+  assert.equal(onlyCrm.level, 'C');
+});
+
 test('website string is kept only as a plain http(s) URL', () => {
   assert.equal(sanitizeWebsite('https://example.co.il/path'), 'https://example.co.il/path');
   assert.equal(sanitizeWebsite('javascript:alert(1)'), '');
