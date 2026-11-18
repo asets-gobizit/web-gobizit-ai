@@ -15,12 +15,22 @@
     },
     {
       "source": "/services/darwin-ai",
-      "destination": "/solutions/darwin-ai",
+      "destination": "/solutions/",
       "permanent": true
     },
     {
       "source": "/es/services/darwin-ai",
-      "destination": "/es/solutions/darwin-ai",
+      "destination": "/es/solutions/",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/darwin-ai",
+      "destination": "/solutions/",
+      "permanent": true
+    },
+    {
+      "source": "/es/solutions/darwin-ai",
+      "destination": "/es/solutions/",
       "permanent": true
     },
     {
