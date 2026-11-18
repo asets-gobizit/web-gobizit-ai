@@ -54,6 +54,40 @@ Apply the variables to Production when the real recommendations should go live. 
 
 The server calls Anthropic `POST https://api.anthropic.com/v1/messages` or OpenAI `POST https://api.openai.com/v1/chat/completions`. The upstream call is aborted at 8 seconds. A timeout, HTTP error, or unusable reply uses the same silent fallback.
 
-The model receives the eight answer indexes (as the fixed Hebrew labels), the score and level computed on the server, the level's rule, and the optional website string. It does not receive the name or email. The website is not fetched. Leads are not stored: `postLead` in the page is a stub for a later Zoho CRM connection and does not send or log personal data.
+The model receives the eight answers as the fixed Hebrew labels, the score and level computed on the server, the level's rule, and the optional website string. It does not receive the name, email, or general comment. The website is not fetched.
 
-In-memory abuse limits, per function instance: body at most 8 KB, 30 requests per 10 minutes per IP, and 120 requests per minute overall. A shared venue network should still get through. Over the limit, the page falls back to the rule-based result.
+## Multi-select scoring
+
+Questions 2, 4, 5, 6, and 7 stay single-select. Each is a level or a range, and the points are the chosen index, 0 to 3.
+
+Questions 1, 3, and 8 allow several answers. A hint says "אפשר לבחור כמה", the options use a checkbox, and "המשך" moves on.
+
+- Question 1 (business type) is not scored. If "קליניקה או שירות שעובד עם תורים" is among the choices, chapter 06 is added.
+- Question 3 (where leads live) is scored. One choice keeps its 0–3 points. Several choices score `min(2, highest choice)`. A split between places does not get the 3 points reserved for an up-to-date CRM that is the only system. If "וואטסאפ, מחברת או בראש" is among the choices, the level does not rise above B. If an up-to-date CRM is among the choices and the total score is 6 or less, the level rises to B.
+- Question 8 (pains) is not scored. Each selected pain adds its booklet chapter and its diagnostic-call direction.
+
+Questions 2, 4, and 5 still add the same website, response-time, and manual-hours notes as before.
+
+## Lead email
+
+`POST /api/survey-lead/` sends one plain-text email per completed quiz. The page calls it after the result is on screen, including whether the visitor saw the AI steps or the rule-based steps. Mail failure does not change the result.
+
+Set these in the Vercel project. Do not commit the values.
+
+| Name | Required | Purpose |
+| --- | --- | --- |
+| `SMTP_HOST` | For SMTP | Zoho Mail: `smtp.zoho.eu` |
+| `SMTP_PORT` | For SMTP | `465` (implicit TLS). 587 also works. |
+| `SMTP_USER` | For SMTP | Zoho mailbox username. |
+| `SMTP_PASS` | For SMTP | Zoho mailbox password or app password. |
+| `MAIL_FROM` | For either sender | From address, for example `GoBizIT <info@gobizit.ai>`. |
+| `LEAD_TO` | No | Inbox. Default `neo@gobizit.ai`. |
+| `RESEND_API_KEY` | Alternative | Used only when the SMTP host, user, and password are not all set. Still needs `MAIL_FROM`. |
+
+SMTP is preferred. If neither SMTP nor Resend is configured, the route logs `survey-lead skipped not_configured` and returns without the visitor's details. The log line does not include the name, email, or comment.
+
+The message includes the name, email, website, consent, every question with the chosen answers, the general comment (up to 1000 characters), score, level, the recommendation that was shown, whether that recommendation came from AI or the rules, the Jerusalem timestamp, and a short explanation of how the score and level were reached. If an AI key is configured, that explanation may be a short rewrite of the scoring facts. Otherwise it is written from the rules. The model does not receive the name or email.
+
+Abuse limits on the lead route, per function instance: body at most 16 KB, a honeypot field, 20 requests per 10 minutes per IP, and 60 requests per minute overall.
+
+In-memory limits on the recommendation route stay: body at most 8 KB, 30 requests per 10 minutes per IP, and 120 requests per minute overall.

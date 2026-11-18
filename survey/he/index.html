@@ -107,6 +107,62 @@
     background: #eaf2fe;
     font-weight: 700;
   }
+  .answer-btn.multi {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tick {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--navy);
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: #fff;
+  }
+  .answer-btn.selected .tick {
+    background: var(--blue);
+    border-color: var(--blue);
+    box-shadow: inset 0 0 0 3px #fff;
+  }
+  .multi-hint {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: -6px 0 14px;
+  }
+  #continue-btn { margin-bottom: 4px; }
+  #continue-btn:disabled { opacity: 0.55; cursor: default; }
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-family: inherit;
+    border: 2px solid var(--light-blue);
+    border-radius: 12px;
+    margin-bottom: 6px;
+    color: var(--navy);
+    background: #fff;
+    resize: vertical;
+  }
+  textarea:focus { border-color: var(--blue); outline: none; }
+  .char-count {
+    font-size: 0.85rem;
+    color: #4a5280;
+    margin-bottom: 16px;
+  }
+  .hp-field {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
   .progress-label {
     font-size: 0.95rem;
     font-weight: 700;
@@ -316,6 +372,7 @@
     }
     #answers .answer-btn { margin-bottom: 0; min-height: 72px; }
     #answers .answer-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    #continue-btn { width: auto; min-width: 240px; }
     #screen-form .form-layout,
     #screen-result .result-layout {
       display: grid;
@@ -355,7 +412,9 @@
     <p class="progress-label" id="progress-label" aria-live="polite">שאלה 1 מתוך 8</p>
     <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
     <h2 class="q-title" id="q-title"></h2>
+    <p class="multi-hint" id="multi-hint" hidden>אפשר לבחור כמה</p>
     <div id="answers"></div>
+    <button type="button" class="btn btn-cta" id="continue-btn" hidden>המשך</button>
     <button type="button" class="back-btn" id="back-btn">→ חזרה</button>
   </section>
 
@@ -371,6 +430,13 @@
       <input type="email" id="lead-email" name="email" autocomplete="email" inputmode="email" required>
       <label for="lead-website">אתר העסק (לא חובה)</label>
       <input type="url" id="lead-website" name="website" autocomplete="url" inputmode="url" placeholder="https://">
+      <label for="lead-comment">הערה כללית (לא חובה)</label>
+      <textarea id="lead-comment" name="comment" maxlength="1000" rows="4" placeholder="אם יש משהו שחשוב שנדע"></textarea>
+      <p class="char-count" id="comment-count">0/1000</p>
+      <div class="hp-field" aria-hidden="true">
+        <label for="lead-company">Company</label>
+        <input type="text" id="lead-company" name="company" tabindex="-1" autocomplete="off">
+      </div>
       <div class="consent-row">
         <input type="checkbox" id="lead-consent" required>
         <label for="lead-consent" style="font-weight:400; margin-bottom:0;">
@@ -433,6 +499,7 @@
     {
       title: 'מה סוג העסק?',
       scored: false,
+      multi: true,
       answers: [
         'קליניקה או שירות שעובד עם תורים',
         'מכירות לעסקים (B2B) או שירותים מקצועיים',
@@ -454,6 +521,7 @@
     {
       title: 'איפה מנוהלים הלקוחות והלידים שלכם?',
       scored: true,
+      multi: true,
       answers: [
         'בוואטסאפ, במחברת או בראש',
         'באקסל או ב-Google Sheets',
@@ -504,6 +572,7 @@
     {
       title: 'מה הכי כואב לכם היום?',
       scored: false,
+      multi: true,
       answers: [
         'פניות ולידים שלא מקבלים מענה בזמן',
         'הצעות מחיר שנתקעות ואין מי שיעקוב אחריהן',
@@ -568,81 +637,126 @@
     result: document.getElementById('screen-result')
   };
 
-  function showScreen(name) {
+  function showScreen(name, options) {
     Object.keys(screens).forEach(function (k) {
       screens[k].hidden = (k !== name);
     });
-    window.scrollTo(0, 0);
+    if (!options || options.scroll !== false) window.scrollTo(0, 0);
   }
 
-  function renderQuestion() {
+  function selectedList(qIndex) {
+    var value = answers[qIndex];
+    return Array.isArray(value) ? value.slice() : [];
+  }
+
+  function hasChoice(qIndex, option) {
+    return selectedList(qIndex).indexOf(option) !== -1;
+  }
+
+  function singleChoice(qIndex) {
+    var list = selectedList(qIndex);
+    return list.length ? list[0] : null;
+  }
+
+  function advance() {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      showScreen('form');
+    }
+  }
+
+  function renderQuestion(fromToggle) {
     var q = questions[currentQ];
     document.getElementById('progress-label').textContent = 'שאלה ' + (currentQ + 1) + ' מתוך ' + questions.length;
     document.getElementById('progress-fill').style.width = ((currentQ + 1) / questions.length * 100) + '%';
     document.getElementById('q-title').textContent = q.title;
+    document.getElementById('multi-hint').hidden = !q.multi;
+    var continueBtn = document.getElementById('continue-btn');
+    continueBtn.hidden = !q.multi;
+    continueBtn.disabled = q.multi && selectedList(currentQ).length === 0;
 
     var container = document.getElementById('answers');
     container.innerHTML = '';
     q.answers.forEach(function (text, i) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'btn answer-btn' + (answers[currentQ] === i ? ' selected' : '');
-      btn.textContent = text;
+      var picked = hasChoice(currentQ, i);
+      btn.className = 'btn answer-btn' + (q.multi ? ' multi' : '') + (picked ? ' selected' : '');
+      btn.setAttribute('aria-pressed', picked ? 'true' : 'false');
+      if (q.multi) {
+        var tick = document.createElement('span');
+        tick.className = 'tick';
+        tick.setAttribute('aria-hidden', 'true');
+        var label = document.createElement('span');
+        label.textContent = text;
+        btn.appendChild(tick);
+        btn.appendChild(label);
+      } else {
+        btn.textContent = text;
+      }
       btn.addEventListener('click', function () {
-        answers[currentQ] = i;
-        if (currentQ < questions.length - 1) {
-          currentQ++;
-          renderQuestion();
-        } else {
-          showScreen('form');
+        if (q.multi) {
+          var list = selectedList(currentQ);
+          var at = list.indexOf(i);
+          if (at === -1) list.push(i);
+          else list.splice(at, 1);
+          list.sort(function (a, b) { return a - b; });
+          answers[currentQ] = list;
+          renderQuestion(true);
+          return;
         }
+        answers[currentQ] = [i];
+        advance();
       });
       container.appendChild(btn);
     });
 
     document.getElementById('back-btn').textContent = currentQ === 0 ? '→ חזרה למסך הפתיחה' : '→ חזרה לשאלה הקודמת';
-    showScreen('question');
+    showScreen('question', { scroll: fromToggle ? false : true });
   }
 
   function computeResult() {
-    var score = 0;
-    for (var i = 1; i <= 6; i++) { // questions 2–7, 0–3 points each by answer index
-      score += answers[i];
-    }
+    var q3 = selectedList(2);
+    var q3Points = q3.length > 1 ? Math.min(2, Math.max.apply(null, q3)) : q3[0];
+    var score = q3Points;
+    score += singleChoice(1) + singleChoice(3) + singleChoice(4) + singleChoice(5) + singleChoice(6);
 
     var level;
     if (score <= 6) level = 'A';
     else if (score <= 12) level = 'B';
     else level = 'C';
 
-    // Correction rule 1: no foundation, no agent — Q3 = a caps the level at B
-    if (answers[2] === 0 && level === 'C') level = 'B';
-    // Correction rule 2: up-to-date CRM — Q3 = d with score <= 6 raises to B
-    if (answers[2] === 3 && score <= 6) level = 'B';
+    // Correction rule 1: choosing "WhatsApp / notebook / in my head" caps the level at B
+    if (hasChoice(2, 0) && level === 'C') level = 'B';
+    // Correction rule 2: an up-to-date CRM with score <= 6 raises the level to B
+    if (hasChoice(2, 3) && score <= 6 && level === 'A') level = 'B';
 
     var addons = [];
-    // Correction rule 3: missed leads — Q4 = a or b
-    if (answers[3] === 0 || answers[3] === 1) {
+    if (hasChoice(3, 0) || hasChoice(3, 1)) {
       addons.push('רכיב מומלץ – מענה מיידי: סוכן צ\'אט לאתר (עם ההטבה של 50% לחברי הקבוצה), או סוכן טלפוני (EVA) לעסקים שרוב הפניות שלהם מגיעות בטלפון.');
     }
-    // Correction rule 4: no website — Q2 = a
-    if (answers[1] === 0) {
+    if (hasChoice(1, 0)) {
       addons.push('רכיב מומלץ – נוכחות בסיסית: אתר פשוט עם טופס או צ\'אט שמעבירים את הפנייה ישר לוואטסאפ או ל-CRM.');
     }
-    // Correction rule 5: heavy manual work — Q5 = a (≈40h/month) or b (≈30h/month)
-    if (answers[4] === 0 || answers[4] === 1) {
-      var hours = answers[4] === 0 ? 40 : 30;
+    if (hasChoice(4, 0) || hasChoice(4, 1)) {
+      var hours = hasChoice(4, 0) ? 40 : 30;
       addons.push('הערכה גסה: זה בערך ' + hours + ' שעות בחודש שאפשר להחזיר לעסק.');
     }
 
-    var pain = painMap[answers[7]];
-    var chapters = [pain.chapter];
-    // Q1 = a (clinic/appointments): chapter 06 is always shown as well
-    if (answers[0] === 0 && chapters.indexOf(painMap[5].chapter) === -1) {
+    var chapters = [];
+    var directions = [];
+    selectedList(7).forEach(function (painIndex) {
+      var pain = painMap[painIndex];
+      if (chapters.indexOf(pain.chapter) === -1) chapters.push(pain.chapter);
+      if (directions.indexOf(pain.direction) === -1) directions.push(pain.direction);
+    });
+    if (hasChoice(0, 0) && chapters.indexOf(painMap[5].chapter) === -1) {
       chapters.push(painMap[5].chapter);
     }
 
-    return { score: score, level: level, addons: addons, chapters: chapters, direction: pain.direction };
+    return { score: score, level: level, addons: addons, chapters: chapters, direction: directions.join(' · ') };
   }
 
   function renderResult(res) {
@@ -689,6 +803,12 @@
     document.getElementById('ai-summary').hidden = false;
     document.getElementById('steps-heading-text').textContent = '3 צעדים מומלצים:';
 
+    shownRecommendation = {
+      source: 'rules',
+      summary: rec.text,
+      steps: rec.steps.slice()
+    };
+
     showScreen('result');
     loadAiRecommendation(res);
   }
@@ -706,11 +826,15 @@
     document.getElementById('steps-heading-text').textContent = '3 הצעדים מההמלצה האוטומטית:';
     var stepsEl = document.getElementById('result-steps');
     stepsEl.innerHTML = '';
+    var cleanSteps = [];
     data.steps.forEach(function (s) {
+      var text = s.trim();
+      cleanSteps.push(text);
       var li = document.createElement('li');
-      li.textContent = s.trim();
+      li.textContent = text;
       stepsEl.appendChild(li);
     });
+    shownRecommendation = { source: 'ai', summary: summary, steps: cleanSteps };
   }
 
   function loadAiRecommendation(res) {
@@ -739,13 +863,23 @@
       // Silent rule-based fallback: the result screen is already filled.
     }).finally(function () {
       clearTimeout(timer);
+      if (requestId !== aiRequest || !pendingLead) return;
+      pendingLead.recommendation = shownRecommendation;
+      postLead(pendingLead);
     });
   }
 
+  var pendingLead = null;
+  var shownRecommendation = null;
+
   function postLead(data) {
-    // TODO(Zoho CRM): send the lead later. This stub sends nothing to any
-    // third party and does not log personal data (name, email, phone, website).
-    return data && data.score;
+    fetch('/api/survey-lead/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(function () {
+      // The result is already on screen. A mail failure stays on the server.
+    });
   }
 
   document.getElementById('start-btn').addEventListener('click', function () {
@@ -795,17 +929,34 @@
       return;
     }
 
+    var comment = document.getElementById('lead-comment').value.trim();
+    if (comment.length > 1000) {
+      errEl.textContent = 'ההערה יכולה להיות עד 1000 תווים.';
+      errEl.style.display = 'block';
+      return;
+    }
+
     var res = computeResult();
-    postLead({
+    pendingLead = {
       name: name,
       email: email,
       website: website,
-      consent: consent,
-      score: res.score,
-      level: res.level,
-      answers: answers.slice()
-    });
+      consent: true,
+      comment: comment,
+      answers: answers.map(function (list) { return list.slice(); }),
+      company: document.getElementById('lead-company').value
+    };
     renderResult(res);
+  });
+
+  document.getElementById('continue-btn').addEventListener('click', function () {
+    if (!questions[currentQ].multi || selectedList(currentQ).length === 0) return;
+    advance();
+  });
+
+  document.getElementById('lead-comment').addEventListener('input', function () {
+    var count = document.getElementById('lead-comment').value.length;
+    document.getElementById('comment-count').textContent = count + '/1000';
   });
 })();
 </script>

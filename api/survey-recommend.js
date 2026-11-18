@@ -31,6 +31,9 @@ const GLOBAL_WINDOW_MS = 60 * 1000;
 const GLOBAL_LIMIT = 120;
 
 const OPTION_COUNTS = [5, 4, 4, 4, 4, 4, 4, 6];
+// Q1 business type, Q3 where leads live, and Q8 pains can each be several things at once.
+// Q2 and Q4–Q7 are levels or ranges, so one answer is the whole answer.
+const MULTI = [true, false, true, false, false, false, false, true];
 
 const QUESTIONS = [
   {
@@ -287,55 +290,116 @@ function sanitizeWebsite(value) {
   return url.toString().slice(0, 200);
 }
 
+function hasChoice(selected, index) {
+  return selected.indexOf(index) !== -1;
+}
+
+function selectionOf(value, optionCount, multi) {
+  let source = value;
+  if (typeof value === 'number') source = [value];
+  if (!Array.isArray(source) || source.length === 0) return null;
+  if (!multi && source.length !== 1) return null;
+  const seen = Object.create(null);
+  const out = [];
+  for (let i = 0; i < source.length; i += 1) {
+    const n = source[i];
+    if (typeof n !== 'number' || !Number.isInteger(n) || n < 0 || n >= optionCount || seen[n]) {
+      return null;
+    }
+    seen[n] = true;
+    out.push(n);
+  }
+  out.sort((a, b) => a - b);
+  return out;
+}
+
+function normalizeAll(raw) {
+  if (!Array.isArray(raw) || raw.length !== OPTION_COUNTS.length) return null;
+  const answers = [];
+  for (let i = 0; i < OPTION_COUNTS.length; i += 1) {
+    const selected = selectionOf(raw[i], OPTION_COUNTS[i], MULTI[i]);
+    if (!selected) return null;
+    answers.push(selected);
+  }
+  return answers;
+}
+
+function q3Points(selected) {
+  if (selected.length === 1) return selected[0];
+  // Several places at once: take the strongest one, but not the full
+  // "CRM is the only system" score of 3.
+  return Math.min(2, Math.max.apply(null, selected));
+}
+
 function validateBody(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { error: 'invalid' };
   }
-  if (!Array.isArray(body.answers) || body.answers.length !== OPTION_COUNTS.length) {
-    return { error: 'invalid' };
-  }
-  const answers = [];
-  for (let i = 0; i < OPTION_COUNTS.length; i += 1) {
-    const n = body.answers[i];
-    if (typeof n !== 'number' || !Number.isInteger(n) || n < 0 || n >= OPTION_COUNTS[i]) {
-      return { error: 'invalid' };
-    }
-    answers.push(n);
-  }
+  const answers = normalizeAll(body.answers);
+  if (!answers) return { error: 'invalid' };
   let website = '';
   if (body.website !== undefined && body.website !== null && body.website !== '') {
     if (typeof body.website !== 'string') return { error: 'invalid' };
     website = sanitizeWebsite(body.website);
   }
-  return { answers, website };
+  return { answers: answers, website: website };
 }
 
-function computeResult(answers) {
+function computeResult(raw) {
+  const answers = normalizeAll(raw);
+  if (!answers) return null;
+
+  const points = [];
   let score = 0;
-  for (let i = 1; i <= 6; i += 1) score += answers[i];
+  for (let i = 1; i <= 6; i += 1) {
+    const labels = answers[i].map((n) => QUESTIONS[i].options[n]);
+    let pts = answers[i][0];
+    let note = '';
+    if (i === 2) {
+      pts = q3Points(answers[i]);
+      if (answers[i].length > 1) {
+        note = 'נבחרו כמה מקומות, ולכן הניקוד הוא הגבוה מביניהם ועד 2.';
+      }
+    }
+    score += pts;
+    points.push({ question: i + 1, labels: labels, points: pts, note: note });
+  }
 
   let level = 'C';
   if (score <= 6) level = 'A';
   else if (score <= 12) level = 'B';
 
-  if (answers[2] === 0 && level === 'C') level = 'B';
-  if (answers[2] === 3 && score <= 6) level = 'B';
+  const adjustments = [];
+  if (hasChoice(answers[2], 0) && level === 'C') {
+    level = 'B';
+    adjustments.push('נבחר "וואטסאפ, מחברת או בראש" בשאלה 3, ולכן הרמה לא עולה מעל בדרך.');
+  }
+  if (hasChoice(answers[2], 3) && score <= 6 && level === 'A') {
+    level = 'B';
+    adjustments.push('נבחר CRM מעודכן בשאלה 3 והציון 6 או פחות, ולכן הרמה עלתה לבדרך.');
+  }
 
   const addons = [];
-  if (answers[3] === 0 || answers[3] === 1) {
+  if (hasChoice(answers[3], 0) || hasChoice(answers[3], 1)) {
     addons.push('מענה מיידי: סוכן צ\'אט לאתר, או סוכן טלפוני לעסקים שרוב הפניות שלהם מגיעות בטלפון.');
   }
-  if (answers[1] === 0) {
+  if (hasChoice(answers[1], 0)) {
     addons.push('נוכחות בסיסית: אתר פשוט עם טופס או צ\'אט שמעבירים את הפנייה ישר לוואטסאפ או ל-CRM.');
   }
-  if (answers[4] === 0 || answers[4] === 1) {
-    const hours = answers[4] === 0 ? 40 : 30;
+  if (hasChoice(answers[4], 0) || hasChoice(answers[4], 1)) {
+    const hours = hasChoice(answers[4], 0) ? 40 : 30;
     addons.push('הערכה גסה: בערך ' + hours + ' שעות בחודש של עבודה ידנית.');
   }
 
-  const pain = PAIN[answers[7]];
-  const chapters = [pain.chapter];
-  if (answers[0] === 0 && chapters.indexOf(PAIN[5].chapter) === -1) {
+  const chapters = [];
+  const directions = [];
+  answers[7].forEach((painIndex) => {
+    const pain = PAIN[painIndex];
+    if (chapters.indexOf(pain.chapter) === -1) chapters.push(pain.chapter);
+    if (directions.indexOf(pain.direction) === -1) directions.push(pain.direction);
+  });
+  const clinic = hasChoice(answers[0], 0);
+  if (clinic && chapters.indexOf(PAIN[5].chapter) === -1) {
     chapters.push(PAIN[5].chapter);
   }
 
@@ -344,12 +408,44 @@ function computeResult(answers) {
     level: level,
     addons: addons,
     chapters: chapters,
-    direction: pain.direction
+    direction: directions.join(' · '),
+    answers: answers,
+    points: points,
+    adjustments: adjustments,
+    clinic: clinic
   };
 }
 
-function buildPrompt(answers, result, website) {
-  const lines = QUESTIONS.map((q, i) => (i + 1) + '. ' + q.title + ' ' + q.options[answers[i]]);
+function explainDeterministic(result) {
+  const lines = [
+    'הציון הוא סכום שאלות 2 עד 7. כל שאלה נותנת 0 עד 3 נקודות, עד 18.'
+  ];
+  result.points.forEach((row) => {
+    const pointsWord = row.points === 1 ? 'נקודה' : 'נקודות';
+    let line = 'שאלה ' + row.question + ': ' + row.labels.join(' · ') + ' — ' + row.points + ' ' + pointsWord + '.';
+    if (row.note) line += ' ' + row.note;
+    lines.push(line);
+  });
+  lines.push('סכום: ' + result.score + '/18. הטווחים: 0–6 בסיס, 7–12 בדרך, 13–18 מוכנים.');
+  if (result.adjustments.length) {
+    result.adjustments.forEach((line) => lines.push(line));
+  } else {
+    lines.push('לא הופעל תיקון על הרמה.');
+  }
+  lines.push('הרמה הסופית: ' + result.level + ' (' + LEVELS[result.level].name + '). שלושת הצעדים הקבועים נגזרים מהרמה הזו.');
+  lines.push('הפרקים נגזרים מהכאבים בשאלה 8' + (result.clinic ? ', וגם מסוג עסק שכולל קליניקה או תורים.' : '.'));
+  lines.push('כיוון לשיחה: ' + result.direction + '.');
+  if (result.addons.length) {
+    lines.push('רכיבים נוספים על המסך: ' + result.addons.join(' '));
+  }
+  return lines.join('\n');
+}
+
+function buildPrompt(raw, result, website) {
+  const answers = result && result.answers ? result.answers : normalizeAll(raw);
+  const lines = QUESTIONS.map((q, i) => (
+    (i + 1) + '. ' + q.title + ' ' + answers[i].map((n) => q.options[n]).join(' · ')
+  ));
   const level = LEVELS[result.level];
   const parts = [
     'תשובות השאלון:',
@@ -593,7 +689,10 @@ handler._test = {
   sanitizeWebsite: sanitizeWebsite,
   resetLimits: resetLimits,
   allowRequest: allowRequest,
-  LEVELS: LEVELS
+  LEVELS: LEVELS,
+  QUESTIONS: QUESTIONS,
+  explainDeterministic: explainDeterministic,
+  normalizeAll: normalizeAll
 };
 
 module.exports = handler;

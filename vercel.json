@@ -168,9 +168,13 @@
       "permanent": true
     }
   ],
+  "framework": null,
   "functions": {
     "api/survey-recommend.js": {
       "maxDuration": 15
+    },
+    "api/survey-lead.js": {
+      "maxDuration": 20
     }
   },
   "rewrites": [
@@ -201,6 +205,10 @@
     {
       "source": "/api/survey-recommend/",
       "destination": "/api/survey-recommend"
+    },
+    {
+      "source": "/api/survey-lead/",
+      "destination": "/api/survey-lead"
     }
   ],
   "headers": [
