@@ -14,6 +14,8 @@ Hebrew stays right to left. English and Spanish are left to right. A language pi
 
 `https://survey.gobizit.ai/` and `https://survey.gobizit.ai/he/` serve the same page. The PDF link on the result screen is relative (`gift-ai-prompts-he.pdf`), so it resolves next to the page on both URLs.
 
+The Spanish marketing site already occupies `/es` in this project. Vercel serves that file before a `vercel.json` rewrite, so `middleware.js` rewrites `/`, `/he`, `/en`, and `/es` only when the host is `survey.gobizit.ai`. `gobizit.ai/es` is unchanged.
+
 The recommend API is `POST /api/survey-recommend/` on the same host. The trailing slash matches this project's `trailingSlash` setting, and a rewrite passes that path to the function. It is not rewritten onto the quiz folder.
 
 ## Cloudflare DNS
