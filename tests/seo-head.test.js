@@ -140,6 +140,33 @@ test('copied structured data points at the page it is on', () => {
   }
 });
 
+test('Zoho PageSense is the first thing in every HTML document head, once', () => {
+  const snippetStart = '<script id="pagesenseCode">';
+  const pages = walk(root).filter((file) => {
+    const raw = fs.readFileSync(file);
+    return !raw.includes(0) && raw.includes(Buffer.from('<head>'));
+  });
+  assert.equal(pages.length, 65);
+  for (const file of pages) {
+    const rel = path.relative(root, file).split(path.sep).join('/');
+    const html = fs.readFileSync(file, 'utf8');
+    assert.equal(html.split('id="pagesenseCode"').length - 1, 1, rel);
+    const head = headOf(html);
+    const headAt = head.indexOf('<head>');
+    assert.ok(headAt !== -1, rel);
+    const after = head.slice(headAt + '<head>'.length).replace(/^\r?\n/, '');
+    assert.equal(after.startsWith(snippetStart), true, rel);
+    assert.match(after, /cdn\.pagesense\.io\/js\/kiwicrm\/3ac28262b3284ff1b2c96c56a50914ba\.js/);
+    const start = html.indexOf('<!-- Zoho SalesIQ -->');
+    if (start !== -1) {
+      const end = html.indexOf('<!-- /Zoho SalesIQ -->', start);
+      const block = html.slice(start, end);
+      assert.equal(block.includes('pagesense'), false, rel);
+      assert.equal(block.includes('wv-site-greeting'), false, rel);
+    }
+  }
+});
+
 test('survey pages canonicalize to survey.gobizit.ai and describe the existing intro', () => {
   const expected = {
     'survey/en/index.html': ['https://survey.gobizit.ai/en/', '8 short questions'],
