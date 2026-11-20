@@ -26,9 +26,9 @@
 
 ## Specialist solutions
 
-- [Hunter](https://gobizit.ai/services/hunter-io/): Verified lead discovery and email outreach setup.
-- [Outplay AI](https://gobizit.ai/services/outplay-ai/): Multichannel sales engagement and follow-up automation.
-- [SuperAGI](https://gobizit.ai/services/super-agi/): Scalable B2B outbound research and outreach.
+- [Hunter](https://gobizit.ai/solutions/hunter-io/): Verified lead discovery and email outreach setup.
+- [Outplay AI](https://gobizit.ai/solutions/outplay-ai/): Multichannel sales engagement and follow-up automation.
+- [SuperAGI](https://gobizit.ai/solutions/super-agi/): Scalable B2B outbound research and outreach.
 
 ## Insights
 

@@ -4,6 +4,28 @@
   "cleanUrls": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gobizit.ai"
+        }
+      ],
+      "destination": "https://gobizit.ai/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gobizit.ai"
+        }
+      ],
+      "destination": "https://gobizit.ai/:path*",
+      "permanent": true
+    },
+    {
       "source": "/es/ai-phone-agent",
       "destination": "/es/services/ai-phone-agent/",
       "permanent": true
