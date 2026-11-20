@@ -70,14 +70,18 @@ test('www.gobizit.ai redirects to the apex host used by canonical tags', () => {
   const redirects = config.redirects.filter((rule) =>
     (rule.has || []).some((check) => check.type === 'host' && check.value === 'www.gobizit.ai')
   );
-  assert.equal(redirects.length, 2);
+  assert.equal(redirects.length, 3);
   assert.equal(redirects[0].source, '/');
   assert.equal(redirects[0].destination, 'https://gobizit.ai/');
   assert.equal(redirects[0].permanent, true);
-  assert.equal(redirects[1].source, '/:path*');
-  assert.equal(redirects[1].destination, 'https://gobizit.ai/:path*');
+  assert.equal(redirects[1].source, '/:path*/');
+  assert.equal(redirects[1].destination, 'https://gobizit.ai/:path*/');
   assert.equal(redirects[1].permanent, true);
+  assert.equal(redirects[2].source, '/:path*');
+  assert.equal(redirects[2].destination, 'https://gobizit.ai/:path*');
+  assert.equal(redirects[2].permanent, true);
   assert.equal(config.redirects[0], redirects[0]);
+  assert.equal(config.redirects[1], redirects[1]);
 });
 
 test('sitemap urls resolve and the missing indexable pages are listed', () => {

@@ -15,6 +15,17 @@
       "permanent": true
     },
     {
+      "source": "/:path*/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gobizit.ai"
+        }
+      ],
+      "destination": "https://gobizit.ai/:path*/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
